@@ -7,6 +7,6 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <!-- Text sizes -->
-    <dimen name="H1">40sp</dimen>
-    <dimen name="H2">20sp</dimen>
+    <dimen name="H1">2dp</dimen>
+    <dimen name="H2">1dp</dimen>
 </resources>

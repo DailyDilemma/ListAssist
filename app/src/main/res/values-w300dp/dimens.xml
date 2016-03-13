@@ -1,0 +1,6 @@
+<resources>
+    <!-- screens larger than 300dp -->
+    <!-- Text sizes -->
+    <dimen name="H1">20dp</dimen>
+    <dimen name="H2">10dp</dimen>
+</resources>

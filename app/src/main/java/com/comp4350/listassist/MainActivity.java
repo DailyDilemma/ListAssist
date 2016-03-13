@@ -2,6 +2,7 @@ package com.comp4350.listassist;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -26,6 +27,14 @@ public class MainActivity extends Activity {
             TextView tv = (TextView)list_row_entry.findViewById(R.id.listName);
             // Get list names from API
             tv.setText("Test list " + i);
+
+            if(i %2 == 0){
+                int color = ContextCompat.getColor(this, R.color.colorEven);
+                list_row_entry.setBackgroundColor(color);
+            } else {
+                int color = ContextCompat.getColor(this, R.color.colorOdd);
+                list_row_entry.setBackgroundColor(color);
+            }
 
             list_table.addView(list_row_entry, i);
         }
