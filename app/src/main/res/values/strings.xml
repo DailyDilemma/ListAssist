@@ -10,5 +10,8 @@
     <string name="open">Open</string>
     <string name="delete">Delete</string>
     <string name="add_list">Add list</string>
+    <string name="add_item">Add item</string>
+    <string name="remove_item">X</string>
+    <string name="item_name">Item name</string>
 
 </resources>

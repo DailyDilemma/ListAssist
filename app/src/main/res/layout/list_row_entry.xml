@@ -16,7 +16,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/list_name"
-            android:id="@+id/listName"
+            android:id="@+id/list_name"
             android:textSize="@dimen/H2"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="10dp"
@@ -36,7 +36,8 @@
             android:maxLines="1"
             android:paddingLeft="0dp"
             android:paddingRight="0dp"
-            android:clickable="true" />
+            android:clickable="true"
+            android:onClick="open_list" />
 
         <Button
             android:layout_width="0dp"
@@ -49,7 +50,8 @@
             android:maxLines="1"
             android:paddingLeft="0dp"
             android:paddingRight="0dp"
-            android:clickable="true" />
+            android:clickable="true"
+            android:onClick="delete_list" />
 
     </LinearLayout>
 

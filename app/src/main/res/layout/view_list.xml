@@ -3,4 +3,42 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:layout_gravity="center_horizontal">
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/list_name"
+            android:id="@+id/list_name"
+            android:layout_gravity="center_horizontal"
+            android:textSize="@dimen/H1"
+            android:textAlignment="center"
+            android:background="@color/colorPrimary"
+            android:textColor="@color/colorLight"
+            android:layout_marginBottom="15dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp" />
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:id="@+id/item_table"
+            android:layout_weight="1">
+
+        </TableLayout>
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/add_item"
+            android:contentDescription="@string/add_item"
+            android:src="@mipmap/add_item_icn"
+            android:background="@null"
+            android:layout_gravity="right"
+            android:onClick="add_item" />
+    </LinearLayout>
 </LinearLayout>
