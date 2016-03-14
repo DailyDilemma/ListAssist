@@ -1,57 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:layout_width="match_parent" android:layout_height="wrap_content"
     android:nestedScrollingEnabled="true"
-    android:weightSum="6">
+    android:weightSum="1">
 
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:weightSum="6"
-        android:longClickable="false">
+        android:layout_height="match_parent"
+        android:weightSum="1"
+        android:longClickable="false"
+        android:layout_weight="1">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/list_name"
             android:id="@+id/listName"
-            android:textSize="@dimen/H1"
+            android:textSize="@dimen/H2"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="10dp"
-            android:layout_weight="3"
+            android:layout_weight="0.5"
             android:maxLines="1"
-            android:ellipsize="end" />
+            android:ellipsize="end"
+            android:textAlignment="textStart" />
 
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/edit"
-            android:id="@+id/Edit"
-            android:textSize="@dimen/H2"
-            android:layout_weight="0.5"
+            android:text="@string/open"
+            android:id="@+id/open_button"
             android:layout_gravity="center_vertical"
-            android:maxLines="1" />
+            android:textSize="@dimen/H3"
+            android:layout_weight="0.25"
+            android:maxLines="1"
+            android:paddingLeft="0dp"
+            android:paddingRight="0dp"
+            android:clickable="true" />
 
         <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/details"
-            android:id="@+id/Details"
-            android:layout_gravity="center_vertical"
-            android:textSize="@dimen/H2"
-            android:layout_weight="0.5"
-            android:maxLines="1" />
-
-        <Button
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/delete"
-            android:id="@+id/Delete"
+            android:id="@+id/delete_button"
             android:layout_gravity="center_vertical"
-            android:textSize="@dimen/H2"
-            android:layout_weight="0.5"
-            android:maxLines="1" />
+            android:textSize="@dimen/H3"
+            android:layout_weight="0.25"
+            android:maxLines="1"
+            android:paddingLeft="0dp"
+            android:paddingRight="0dp"
+            android:clickable="true" />
 
     </LinearLayout>
 

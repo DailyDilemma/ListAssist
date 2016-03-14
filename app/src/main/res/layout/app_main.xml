@@ -2,13 +2,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:weightSum="1">
+    android:weightSum="1"
+    android:backgroundTint="@color/colorLight">
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="fill_parent"
-        android:layout_height="match_parent"
-        android:weightSum="1">
+        android:layout_height="0dp"
+        android:weightSum="1"
+        android:background="@color/colorLight"
+        android:layout_weight="1">
 
         <TextView
             android:layout_width="wrap_content"
@@ -17,7 +20,7 @@
             android:id="@+id/welcome_msg"
             android:layout_gravity="center_horizontal"
             android:textIsSelectable="false"
-            android:textSize="@dimen/H2" />
+            android:textSize="@dimen/H3" />
 
         <TextView
             android:layout_width="fill_parent"
@@ -31,14 +34,23 @@
             android:background="@color/colorPrimaryDark" />
 
         <TableLayout
-            android:layout_width="match_parent"
+            android:layout_width="fill_parent"
             android:layout_height="0dp"
             android:id="@+id/list_table"
             android:layout_marginTop="15dp"
-            android:layout_weight="1"
-            android:weightSum="1">
+            android:weightSum="1"
+            android:layout_weight="1">
 
         </TableLayout>
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/new_list_button"
+            android:layout_gravity="right"
+            android:src="@mipmap/add_list_icn"
+            android:background="@color/colorLight"
+            android:contentDescription="@string/add_list" />
 
     </LinearLayout>
 

@@ -3,13 +3,11 @@ package com.comp4350.listassist;
 import android.os.Bundle;
 import android.app.Activity;
 import android.support.v4.content.ContextCompat;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.LinearLayout.LayoutParams;
-import android.widget.TableLayout;
-import android.widget.TableRow;
+import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Button;
 
 public class MainActivity extends Activity {
     @Override
@@ -18,10 +16,11 @@ public class MainActivity extends Activity {
         // The activity is being created.
         setContentView(R.layout.app_main);
 
-        TableLayout list_table = (TableLayout)findViewById(R.id.list_table);
+        // Dynamically add list items
+        ViewGroup list_table = (ViewGroup)findViewById(R.id.list_table);
         for(int i = 0; i < 3; i++) {
             View list_row_entry = getLayoutInflater().inflate(
-                    R.layout.list_row_entry, null, false
+                    R.layout.list_row_entry, list_table, false
             );
 
             TextView tv = (TextView)list_row_entry.findViewById(R.id.listName);
@@ -38,6 +37,28 @@ public class MainActivity extends Activity {
 
             list_table.addView(list_row_entry, i);
         }
+
+        // Add button listeners
+        final Button o_button = (Button) findViewById(R.id.open_button);
+        o_button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // Open list: use parent object to get list name / list id
+            }
+        });
+
+        final Button d_button = (Button) findViewById(R.id.delete_button);
+        d_button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // Delete list
+            }
+        });
+
+        final ImageButton nl_button = (ImageButton) findViewById(R.id.new_list_button);
+        nl_button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // Add new list
+            }
+        });
     }
 
     @Override

@@ -2,5 +2,6 @@
     <!-- screens larger than 780dp -->
     <!-- Text sizes -->
     <dimen name="H1">40dp</dimen>
-    <dimen name="H2">20dp</dimen>
+    <dimen name="H2">40dp</dimen>
+    <dimen name="H3">20dp</dimen>
 </resources>
