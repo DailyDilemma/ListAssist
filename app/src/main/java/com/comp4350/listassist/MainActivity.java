@@ -1,6 +1,8 @@
 package com.comp4350.listassist;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.TransitionDrawable;
 import android.os.Bundle;
 import android.app.Activity;
 import android.support.v4.content.ContextCompat;
@@ -30,11 +32,11 @@ public class MainActivity extends Activity {
             tv.setText("Test list " + i);
 
             if(i %2 == 0){
-                int color = ContextCompat.getColor(this, R.color.colorEven);
-                list_row_entry.setBackgroundColor(color);
+                Drawable background = ContextCompat.getDrawable(this, R.drawable.banner_even);
+                list_row_entry.setBackground(background);
             } else {
-                int color = ContextCompat.getColor(this, R.color.colorOdd);
-                list_row_entry.setBackgroundColor(color);
+                Drawable background = ContextCompat.getDrawable(this, R.drawable.banner_odd);
+                list_row_entry.setBackground(background);
             }
 
             list_table.addView(list_row_entry, i);

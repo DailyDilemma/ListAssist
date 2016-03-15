@@ -3,5 +3,5 @@
     <!-- Text sizes -->
     <dimen name="H1">30dp</dimen>
     <dimen name="H2">20dp</dimen>
-    <dimen name="H3">10dp</dimen>
+    <dimen name="H3">15dp</dimen>
 </resources>

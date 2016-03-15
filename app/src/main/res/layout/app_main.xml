@@ -3,16 +3,7 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:weightSum="1"
-    android:backgroundTint="@color/colorLight">
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/list_assist_welcome"
-        android:id="@+id/welcome_msg"
-        android:layout_gravity="center_horizontal"
-        android:textIsSelectable="false"
-        android:textSize="@dimen/H3" />
+    android:background="@drawable/background">
 
     <TextView
         android:layout_width="fill_parent"
@@ -22,8 +13,9 @@
         android:layout_gravity="center_horizontal"
         android:textSize="@dimen/H1"
         android:textAlignment="center"
-        android:textColor="@color/colorLight"
-        android:background="@color/colorPrimaryDark" />
+        android:textColor="@color/colorText"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp" />
 
     <TableLayout
         android:layout_width="fill_parent"
@@ -42,9 +34,10 @@
         android:id="@+id/new_list_button"
         android:layout_gravity="right"
         android:src="@mipmap/add_list_icn"
-        android:background="@null"
         android:contentDescription="@string/add_list"
         android:onClick="add_list"
-        android:nestedScrollingEnabled="false" />
+        android:nestedScrollingEnabled="false"
+        style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:background="@drawable/def_button" />
 
 </LinearLayout>

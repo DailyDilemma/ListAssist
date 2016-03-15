@@ -23,7 +23,8 @@
             android:layout_weight="0.5"
             android:maxLines="1"
             android:ellipsize="end"
-            android:textAlignment="textStart" />
+            android:textAlignment="textStart"
+            android:textColor="@color/colorText" />
 
         <Button
             android:layout_width="0dp"
@@ -37,7 +38,11 @@
             android:paddingLeft="0dp"
             android:paddingRight="0dp"
             android:clickable="true"
-            android:onClick="open_list" />
+            android:onClick="open_list"
+            android:textColor="@color/colorText"
+            android:layout_margin="5dp"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+            android:background="@drawable/def_button" />
 
         <Button
             android:layout_width="0dp"
@@ -51,7 +56,10 @@
             android:paddingLeft="0dp"
             android:paddingRight="0dp"
             android:clickable="true"
-            android:onClick="delete_list" />
+            android:onClick="delete_list"
+            android:textColor="@color/colorText"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+            android:background="@drawable/def_button" />
 
     </LinearLayout>
 

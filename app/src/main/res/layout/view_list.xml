@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/background">
 
     <LinearLayout
         android:orientation="vertical"
@@ -17,17 +18,17 @@
             android:layout_gravity="center_horizontal"
             android:textSize="@dimen/H1"
             android:textAlignment="center"
-            android:background="@color/colorPrimary"
-            android:textColor="@color/colorLight"
+            android:textColor="@color/colorText"
             android:layout_marginBottom="15dp"
-            android:paddingTop="5dp"
-            android:paddingBottom="5dp" />
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp" />
 
         <TableLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:id="@+id/item_table"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:paddingBottom="-5dp">
 
         </TableLayout>
 
@@ -37,8 +38,15 @@
             android:id="@+id/add_item"
             android:contentDescription="@string/add_item"
             android:src="@mipmap/add_item_icn"
-            android:background="@null"
             android:layout_gravity="right"
-            android:onClick="add_item" />
+            android:onClick="add_item"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="0dp"
+            android:paddingLeft="5dp"
+            android:cropToPadding="false"
+            android:adjustViewBounds="false"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+            android:background="@drawable/def_button"
+            android:paddingTop="5dp" />
     </LinearLayout>
 </LinearLayout>
