@@ -20,8 +20,6 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 public class ViewActivity extends Activity {
-    private boolean striked = false;
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,18 +88,17 @@ public class ViewActivity extends Activity {
         TableLayout tl = (TableLayout)this.findViewById(R.id.item_table);
         CheckBox c_view = (CheckBox)view;
 
-        //TODO: Add api call to check item and add last bought interval
-
-        if(!striked) {
-            c_view.setPaintFlags(c_view.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-            striked = true;
-        } else {
+        //TODO: Add api call to check item and add last bought interval, refresh list
+        int pflag =  c_view.getPaintFlags();
+        if(((pflag | Paint.STRIKE_THRU_TEXT_FLAG) - pflag) == 0) {
+            // text is already striked, remove it
             c_view.setPaintFlags(c_view.getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
-            striked = false;
+        } else {
+            // text is not striked, add it
+            c_view.setPaintFlags(c_view.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            tl.removeView(tr);
+            tl.addView(tr);
         }
-
-        tl.removeView(tr);
-        tl.addView(tr);
     }
 
     public void add_item(View view) {

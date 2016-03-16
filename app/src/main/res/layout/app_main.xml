@@ -24,8 +24,7 @@
         android:id="@+id/list_table"
         android:layout_marginTop="15dp"
         android:weightSum="1"
-        android:layout_weight="1"
-        android:onClick="add_list">
+        android:layout_weight="1">
 
     </TableLayout>
 
