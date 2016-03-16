@@ -23,8 +23,10 @@
         android:text="@string/remove_item"
         android:id="@+id/delete_button"
         android:layout_weight="0.1"
-        android:textColor="@color/colorAccent"
+        android:textColor="@color/colorTextLight"
         android:onClick="delete_item"
-        android:background="@drawable/def_button"
-        android:layout_margin="5dp" />
+        android:background="@drawable/acc_button"
+        android:layout_margin="5dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp" />
 </TableRow>

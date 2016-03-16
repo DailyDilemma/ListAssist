@@ -3,7 +3,7 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:weightSum="1"
-    android:background="@drawable/background">
+    android:background="@color/colorPrimaryLight">
 
     <TextView
         android:layout_width="fill_parent"
@@ -13,9 +13,10 @@
         android:layout_gravity="center_horizontal"
         android:textSize="@dimen/H1"
         android:textAlignment="center"
-        android:textColor="@color/colorText"
+        android:textColor="@color/colorTextLight"
         android:paddingTop="10dp"
-        android:paddingBottom="10dp" />
+        android:paddingBottom="10dp"
+        android:background="@color/colorPrimaryDark" />
 
     <TableLayout
         android:layout_width="fill_parent"

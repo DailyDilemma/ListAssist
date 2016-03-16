@@ -39,7 +39,7 @@
             android:paddingRight="0dp"
             android:clickable="true"
             android:onClick="open_list"
-            android:textColor="@color/colorText"
+            android:textColor="@color/colorTextLight"
             android:layout_margin="5dp"
             style="@style/Widget.AppCompat.Button.Borderless.Colored"
             android:background="@drawable/def_button" />
@@ -57,9 +57,9 @@
             android:paddingRight="0dp"
             android:clickable="true"
             android:onClick="delete_list"
-            android:textColor="@color/colorText"
+            android:textColor="@color/colorTextLight"
             style="@style/Widget.AppCompat.Button.Borderless.Colored"
-            android:background="@drawable/def_button" />
+            android:background="@drawable/acc_button" />
 
     </LinearLayout>
 

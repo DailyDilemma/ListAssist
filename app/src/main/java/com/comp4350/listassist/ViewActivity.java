@@ -38,9 +38,6 @@ public class ViewActivity extends Activity {
             if(i %2 == 0){
                 Drawable background = ContextCompat.getDrawable(this, R.drawable.banner_even);
                 item_row_entry.setBackground(background);
-            } else {
-                Drawable background = ContextCompat.getDrawable(this, R.drawable.banner_odd);
-                item_row_entry.setBackground(background);
             }
 
             item_table.addView(item_row_entry, i);

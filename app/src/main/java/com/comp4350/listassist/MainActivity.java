@@ -34,9 +34,6 @@ public class MainActivity extends Activity {
             if(i %2 == 0){
                 Drawable background = ContextCompat.getDrawable(this, R.drawable.banner_even);
                 list_row_entry.setBackground(background);
-            } else {
-                Drawable background = ContextCompat.getDrawable(this, R.drawable.banner_odd);
-                list_row_entry.setBackground(background);
             }
 
             list_table.addView(list_row_entry, i);
