@@ -1,17 +1,19 @@
 <resources>
     <string name="app_name">ListAssist</string>
 
-    <string name="list_assist_welcome">Welcome to ListAssist! Manage your lists here!</string>
-    <string name="home">Home</string>
-    <string name="create">Create</string>
-    <string name="lists">Lists</string>
-    <string name="list_name">List Name</string>
-    <string name="edit">Edit</string>
-    <string name="open">Open</string>
-    <string name="delete">Delete</string>
-    <string name="add_list">Add list</string>
     <string name="add_item">Add item</string>
-    <string name="remove_item">X</string>
+    <string name="add_list">Add list</string>
+    <string name="cancel">Cancel</string>
+    <string name="confirm">Confirm</string>
+    <string name="create">Create</string>
+    <string name="delete">Delete</string>
+    <string name="edit">Edit</string>
+    <string name="home">Home</string>
     <string name="item_name">Item name</string>
+    <string name="lists">Lists</string>
+    <string name="list_assist_welcome">Welcome to ListAssist! Manage your lists here!</string>
+    <string name="list_name">List Name</string>
+    <string name="open">Open</string>
+    <string name="remove_item">X</string>
 
 </resources>

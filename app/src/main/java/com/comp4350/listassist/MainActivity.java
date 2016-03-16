@@ -1,17 +1,15 @@
 package com.comp4350.listassist;
 
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.TransitionDrawable;
 import android.os.Bundle;
 import android.app.Activity;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewParent;
-import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Button;
 
 public class MainActivity extends Activity {
     @Override
@@ -19,6 +17,8 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         // The activity is being created.
         setContentView(R.layout.app_main);
+
+        //TODO: Get list of lists from api call
 
         // Dynamically add lists
         ViewGroup list_table = (ViewGroup)findViewById(R.id.list_table);
@@ -28,7 +28,7 @@ public class MainActivity extends Activity {
             );
 
             TextView tv = (TextView)list_row_entry.findViewById(R.id.list_name);
-            // Get list names from API
+
             tv.setText("Test list " + i);
 
             if(i %2 == 0){
@@ -69,6 +69,15 @@ public class MainActivity extends Activity {
     // Button handlers
     public void add_list(View view) {
         // Add a list
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        Fragment prev = getFragmentManager().findFragmentByTag("dialog");
+        if (prev != null) {
+            ft.remove(prev);
+        }
+        ft.addToBackStack(null);
+
+        AddingDialog list_dialog = AddingDialog.newInstance("New List", "list");
+        list_dialog.show(ft, "dialog");
     }
 
     public void open_list(View view) {
@@ -80,7 +89,9 @@ public class MainActivity extends Activity {
     }
 
     public void delete_list(View view) {
-        // Open a list
+        //TODO: Remove list with api call, refresh lists
         TextView list_name = (TextView)((ViewGroup) view.getParent()).findViewById(R.id.list_name);
     }
+
+
 }

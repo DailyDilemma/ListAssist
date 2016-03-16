@@ -4,16 +4,24 @@ package com.comp4350.listassist;
  * Created by Daniel on 3/13/2016 for ListAssist.
  */
 
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.app.Activity;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 public class ViewActivity extends Activity {
+    private boolean striked = false;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,6 +32,8 @@ public class ViewActivity extends Activity {
 
         ((TextView)this.findViewById(R.id.list_name)).setText(list_name);
 
+        //TODO: Add api call to get list items
+
         // Dynamically add list items
         ViewGroup item_table = (ViewGroup)findViewById(R.id.item_table);
         for(int i = 0; i < 3; i++) {
@@ -32,7 +42,7 @@ public class ViewActivity extends Activity {
             );
 
             TextView tv = (TextView)item_row_entry.findViewById(R.id.item);
-            // Get list items from API
+
             tv.setText("Test item " + i);
 
             if(i %2 == 0){
@@ -71,14 +81,39 @@ public class ViewActivity extends Activity {
     }
 
     public void delete_item(View view) {
-        // Open a list
+        //TODO: Remove an item from the list with api call, refresh list
     }
 
     public void check_item(View view) {
-        // Open a list
+        // Check off an item, send to bottom of list
+        TableRow tr = (TableRow)view.getParent();
+        TableLayout tl = (TableLayout)this.findViewById(R.id.item_table);
+        CheckBox c_view = (CheckBox)view;
+
+        //TODO: Add api call to check item and add last bought interval
+
+        if(!striked) {
+            c_view.setPaintFlags(c_view.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            striked = true;
+        } else {
+            c_view.setPaintFlags(c_view.getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
+            striked = false;
+        }
+
+        tl.removeView(tr);
+        tl.addView(tr);
     }
 
     public void add_item(View view) {
         // Open a list
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        Fragment prev = getFragmentManager().findFragmentByTag("dialog");
+        if (prev != null) {
+            ft.remove(prev);
+        }
+        ft.addToBackStack(null);
+
+        AddingDialog list_dialog = AddingDialog.newInstance("New Item", "item");
+        list_dialog.show(ft, "dialog");
     }
 }
