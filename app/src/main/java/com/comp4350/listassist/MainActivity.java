@@ -2,6 +2,7 @@ package com.comp4350.listassist;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -10,17 +11,10 @@ import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Button;
 import android.os.AsyncTask;
 import android.util.Log;
-import java.util.Collections;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.http.HttpMethod;
 
 public class MainActivity extends Activity {
     @Override
@@ -29,28 +23,9 @@ public class MainActivity extends Activity {
         // The activity is being created.
         setContentView(R.layout.app_main);
 
-        // Calls the WebAPI on a separate thread. The result of the call is handled in the thread
-        // which then makes a call back to the UI (see AsyncTask farther down)
-        new HttpRequestTask().execute();
+        // Calls the WebAPI on a separate thread to populate the initial list
+        new HttpRequestTask(this).execute();
 
-        // Dynamically add lists
-        ViewGroup list_table = (ViewGroup)findViewById(R.id.list_table);
-        for(int i = 0; i < 3; i++) {
-            View list_row_entry = getLayoutInflater().inflate(
-                    R.layout.list_row_entry, list_table, false
-            );
-
-            TextView tv = (TextView)list_row_entry.findViewById(R.id.list_name);
-
-            tv.setText("Test list " + i);
-
-            if(i %2 == 0){
-                Drawable background = ContextCompat.getDrawable(this, R.drawable.banner_even);
-                list_row_entry.setBackground(background);
-            }
-
-            list_table.addView(list_row_entry, i);
-        }
     }
 
     @Override
@@ -106,35 +81,60 @@ public class MainActivity extends Activity {
         TextView list_name = (TextView)((ViewGroup) view.getParent()).findViewById(R.id.list_name);
     }
 
-    // This class contains methods that run on a separate thread
-    private class HttpRequestTask extends AsyncTask<Void, Void, ShoppingList> {
+    private class HttpRequestTask extends AsyncTask<Void, Void, ShoppingList[]> {
 
-        // doInBackground is the function being called
+        private Context mContext;
+
+        public HttpRequestTask(Context context) {
+            mContext = context;
+        }
+
+        // doInBackground is the function running in the thread
         @Override
-        protected ShoppingList doInBackground(Void... params) {
+        protected ShoppingList[] doInBackground(Void... params) {
+
             try {
-                final String url = "http://ec2-52-36-187-54.us-west-2.compute.amazonaws.com:8080/api/Lists/5";
+
                 RestTemplate restTemplate = new RestTemplate();
                 restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
-                ShoppingList shopList = restTemplate.getForObject(url, ShoppingList.class);
-                return shopList;
+
+                ShoppingList[] shopLists = restTemplate.getForObject("http://ec2-52-36-187-54.us-west-2.compute.amazonaws.com:8080/api/Lists", ShoppingList[].class);
+                return shopLists;
+
             } catch (Exception e) {
+
                 Log.e("MainActivity", e.getMessage(), e);
+
             }
 
             return null;
         }
 
-        // onPostExecute is what happens when the thread is complete. The result of 'doInBackground'
-        // is returned as an argument to this method
+        // onPostExecute gets control when the thread is complete and the return value of the thread
+        // is passed to this method on completion.
         @Override
-        protected void onPostExecute(ShoppingList shopList) {
+        protected void onPostExecute(ShoppingList[] shopLists) {
 
-            // Normally what you would do here is make a call to your list adapter to give it the
-            // updated information now that is has returned from the thread. For now you can check
-            // logcat to see the result of println messages if you want to verify there is data
-            // in the classes
-            System.out.println("Here is where you update your adapter with " + shopList.getName());
+            // Dynamically add lists
+            ViewGroup list_table = (ViewGroup)findViewById(R.id.list_table);
+
+            for(int i = 0; i < shopLists.length; i++) {
+
+                View list_row_entry = getLayoutInflater().inflate(
+                        R.layout.list_row_entry, list_table, false
+                );
+
+                TextView tv = (TextView)list_row_entry.findViewById(R.id.list_name);
+
+                tv.setText(shopLists[i].getName());
+
+                if(i %2 == 0){
+                    Drawable background = ContextCompat.getDrawable(mContext, R.drawable.banner_even);
+                    list_row_entry.setBackground(background);
+                }
+
+                list_table.addView(list_row_entry, i);
+            }
         }
 
     }
