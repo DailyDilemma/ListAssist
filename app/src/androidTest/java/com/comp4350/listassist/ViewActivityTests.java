@@ -13,10 +13,4 @@ public class ViewActivityTests extends ActivityInstrumentationTestCase2<ViewActi
         ViewActivity actv = getActivity();
         assertNotNull(actv);
     }
-
-    public void testEnterNewListItemName() {
-        ViewActivity actv = getActivity();
-
-        //final EditText listItemNameText = (EditText) actv.
-    }
 }

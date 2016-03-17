@@ -13,10 +13,4 @@ public class MainActivityTests extends ActivityInstrumentationTestCase2<MainActi
         MainActivity actv = getActivity();
         assertNotNull(actv);
     }
-
-    public void testEnterNewListName() {
-        MainActivity actv = getActivity();
-
-        //final EditText listNameText = (EditText) actv.
-    }
 }

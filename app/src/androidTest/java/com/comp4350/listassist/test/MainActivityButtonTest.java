@@ -5,10 +5,10 @@ import com.robotium.solo.*;
 import android.test.ActivityInstrumentationTestCase2;
 
 
-public class RoboClickButtons extends ActivityInstrumentationTestCase2<MainActivity> {
+public class MainActivityButtonTest extends ActivityInstrumentationTestCase2<MainActivity> {
   	private Solo solo;
   	
-  	public RoboClickButtons() {
+  	public MainActivityButtonTest() {
 		super(MainActivity.class);
   	}
 
@@ -40,15 +40,15 @@ public class RoboClickButtons extends ActivityInstrumentationTestCase2<MainActiv
         //Click on Test item 0
 		solo.clickOnView(solo.getView(com.comp4350.listassist.R.id.item));
         //Click on Test item 1
-		solo.clickOnView(solo.getView(com.comp4350.listassist.R.id.item, 1));
+		solo.clickOnView(solo.getView(com.comp4350.listassist.R.id.item));
         //Click on Test item 2
-		solo.clickOnView(solo.getView(com.comp4350.listassist.R.id.item, 2));
-        //Click on Test item 2
-		solo.clickOnView(solo.getView(com.comp4350.listassist.R.id.item, 2));
-        //Click on Test item 1
-		solo.clickOnView(solo.getView(com.comp4350.listassist.R.id.item, 1));
+		solo.clickOnView(solo.getView(com.comp4350.listassist.R.id.item));
         //Click on Test item 0
 		solo.clickOnView(solo.getView(com.comp4350.listassist.R.id.item));
+        //Click on Test item 1
+		solo.clickOnView(solo.getView(com.comp4350.listassist.R.id.item, 1));
+        //Click on Test item 2
+		solo.clickOnView(solo.getView(com.comp4350.listassist.R.id.item, 2));
         //Press menu back key
 		solo.goBack();
         //Click on Open
@@ -58,15 +58,15 @@ public class RoboClickButtons extends ActivityInstrumentationTestCase2<MainActiv
         //Click on Test item 0
 		solo.clickOnView(solo.getView(com.comp4350.listassist.R.id.item));
         //Click on Test item 1
-		solo.clickOnView(solo.getView(com.comp4350.listassist.R.id.item, 1));
+		solo.clickOnView(solo.getView(com.comp4350.listassist.R.id.item));
         //Click on Test item 2
-		solo.clickOnView(solo.getView(com.comp4350.listassist.R.id.item, 2));
-        //Click on Test item 2
-		solo.clickOnView(solo.getView(com.comp4350.listassist.R.id.item, 2));
-        //Click on Test item 1
-		solo.clickOnView(solo.getView(com.comp4350.listassist.R.id.item, 1));
+		solo.clickOnView(solo.getView(com.comp4350.listassist.R.id.item));
         //Click on Test item 0
 		solo.clickOnView(solo.getView(com.comp4350.listassist.R.id.item));
+        //Click on Test item 1
+		solo.clickOnView(solo.getView(com.comp4350.listassist.R.id.item, 1));
+        //Click on Test item 2
+		solo.clickOnView(solo.getView(com.comp4350.listassist.R.id.item, 2));
         //Press menu back key
 		solo.goBack();
         //Click on Open
@@ -76,15 +76,15 @@ public class RoboClickButtons extends ActivityInstrumentationTestCase2<MainActiv
         //Click on Test item 0
 		solo.clickOnView(solo.getView(com.comp4350.listassist.R.id.item));
         //Click on Test item 1
-		solo.clickOnView(solo.getView(com.comp4350.listassist.R.id.item, 1));
+		solo.clickOnView(solo.getView(com.comp4350.listassist.R.id.item));
         //Click on Test item 2
-		solo.clickOnView(solo.getView(com.comp4350.listassist.R.id.item, 2));
-        //Click on Test item 2
-		solo.clickOnView(solo.getView(com.comp4350.listassist.R.id.item, 2));
-        //Click on Test item 1
-		solo.clickOnView(solo.getView(com.comp4350.listassist.R.id.item, 1));
+		solo.clickOnView(solo.getView(com.comp4350.listassist.R.id.item));
         //Click on Test item 0
 		solo.clickOnView(solo.getView(com.comp4350.listassist.R.id.item));
+        //Click on Test item 1
+		solo.clickOnView(solo.getView(com.comp4350.listassist.R.id.item, 1));
+        //Click on Test item 2
+		solo.clickOnView(solo.getView(com.comp4350.listassist.R.id.item, 2));
         //Press menu back key
 		solo.goBack();
 	}
