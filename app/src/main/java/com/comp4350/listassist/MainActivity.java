@@ -24,7 +24,7 @@ public class MainActivity extends Activity {
         setContentView(R.layout.app_main);
 
         // Calls the WebAPI on a separate thread to populate the initial list
-        new HttpRequestTask(this).execute();
+        new HttpRequestTask().execute();
 
     }
 
@@ -81,62 +81,83 @@ public class MainActivity extends Activity {
         TextView list_name = (TextView)((ViewGroup) view.getParent()).findViewById(R.id.list_name);
     }
 
-    private class HttpRequestTask extends AsyncTask<Void, Void, ShoppingList[]> {
+    private void append_list(ShoppingList item) {
+        // Dynamically add lists
+        ViewGroup list_table = (ViewGroup)findViewById(R.id.list_table);
 
-        private Context mContext;
+        View list_row_entry = getLayoutInflater().inflate(
+                R.layout.list_row_entry, list_table, false
+        );
 
-        public HttpRequestTask(Context context) {
-            mContext = context;
-        }
+        TextView tv = (TextView)list_row_entry.findViewById(R.id.list_name);
 
-        // doInBackground is the function running in the thread
+        tv.setText(item.getName());
+
+        list_table.addView(list_row_entry);
+    }
+
+    // This class contains methods that run on a separate thread
+    private class HttpRequestTask extends AsyncTask<String, ShoppingList, Boolean> {
+        // doInBackground is the function being called
         @Override
-        protected ShoppingList[] doInBackground(Void... params) {
+        protected Boolean doInBackground(String... params) {
+            boolean success = false;
 
             try {
+                if(params.length == 0) {
+                    // Get all lists: use progress to
+                    RestTemplate restTemplate = new RestTemplate();
+                    restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+                    ShoppingList[] shopLists = restTemplate.getForObject("http://ec2-52-36-187-54.us-west-2.compute.amazonaws.com:8080/api/Lists", ShoppingList[].class);
 
-                RestTemplate restTemplate = new RestTemplate();
-                restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+                    for(ShoppingList curr_list : shopLists) {
+                        publishProgress(curr_list);
+                    }
 
-                ShoppingList[] shopLists = restTemplate.getForObject("http://ec2-52-36-187-54.us-west-2.compute.amazonaws.com:8080/api/Lists", ShoppingList[].class);
-                return shopLists;
-
+                    success = true;
+                } else if(params.length == 2) {
+                    int id;
+                    switch (params[0]) {
+                        case "delete":
+                            id = Integer.parseInt(params[1]);
+                            break;
+                        case "get":
+                            id = Integer.parseInt(params[1]);
+                            String url = "http://ec2-52-36-187-54.us-west-2.compute.amazonaws.com:8080/api/Lists/" + id;
+                            RestTemplate restTemplate = new RestTemplate();
+                            restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+                            ShoppingList shopList = restTemplate.getForObject(url, ShoppingList.class);
+                            publishProgress(shopList);
+                            break;
+                        default:
+                            break;
+                    }
+                }
             } catch (Exception e) {
-
                 Log.e("MainActivity", e.getMessage(), e);
-
             }
 
-            return null;
+            return success;
         }
 
-        // onPostExecute gets control when the thread is complete and the return value of the thread
-        // is passed to this method on completion.
+        // When getting all lists, update progress with single list and add it to the app
         @Override
-        protected void onPostExecute(ShoppingList[] shopLists) {
-
-            // Dynamically add lists
-            ViewGroup list_table = (ViewGroup)findViewById(R.id.list_table);
-
-            for(int i = 0; i < shopLists.length; i++) {
-
-                View list_row_entry = getLayoutInflater().inflate(
-                        R.layout.list_row_entry, list_table, false
-                );
-
-                TextView tv = (TextView)list_row_entry.findViewById(R.id.list_name);
-
-                tv.setText(shopLists[i].getName());
-
-                if(i %2 == 0){
-                    Drawable background = ContextCompat.getDrawable(mContext, R.drawable.banner_even);
-                    list_row_entry.setBackground(background);
-                }
-
-                list_table.addView(list_row_entry, i);
+        protected void onProgressUpdate(ShoppingList... progress) {
+            // Normally what you would do here is make a call to your list adapter to give it the
+            // updated information now that is has returned from the thread. For now you can check
+            // logcat to see the result of println messages if you want to verify there is data
+            // in the classes
+            if(progress.length == 1) {
+                append_list(progress[0]);
             }
+        }
+
+        // onPostExecute is what happens when the thread is complete. The result of 'doInBackground'
+        // is returned as an argument to this method
+        @Override
+        protected void onPostExecute(Boolean success) {
+            boolean _success = success;
         }
 
     }
-
 }
