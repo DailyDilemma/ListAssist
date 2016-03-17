@@ -10,6 +10,17 @@ import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Button;
+import android.os.AsyncTask;
+import android.util.Log;
+import java.util.Collections;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.http.HttpMethod;
 
 public class MainActivity extends Activity {
     @Override
@@ -18,7 +29,9 @@ public class MainActivity extends Activity {
         // The activity is being created.
         setContentView(R.layout.app_main);
 
-        //TODO: Get list of lists from api call
+        // Calls the WebAPI on a separate thread. The result of the call is handled in the thread
+        // which then makes a call back to the UI (see AsyncTask farther down)
+        new HttpRequestTask().execute();
 
         // Dynamically add lists
         ViewGroup list_table = (ViewGroup)findViewById(R.id.list_table);
@@ -93,5 +106,37 @@ public class MainActivity extends Activity {
         TextView list_name = (TextView)((ViewGroup) view.getParent()).findViewById(R.id.list_name);
     }
 
+    // This class contains methods that run on a separate thread
+    private class HttpRequestTask extends AsyncTask<Void, Void, ShoppingList> {
+
+        // doInBackground is the function being called
+        @Override
+        protected ShoppingList doInBackground(Void... params) {
+            try {
+                final String url = "http://ec2-52-36-187-54.us-west-2.compute.amazonaws.com:8080/api/Lists/5";
+                RestTemplate restTemplate = new RestTemplate();
+                restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+                ShoppingList shopList = restTemplate.getForObject(url, ShoppingList.class);
+                return shopList;
+            } catch (Exception e) {
+                Log.e("MainActivity", e.getMessage(), e);
+            }
+
+            return null;
+        }
+
+        // onPostExecute is what happens when the thread is complete. The result of 'doInBackground'
+        // is returned as an argument to this method
+        @Override
+        protected void onPostExecute(ShoppingList shopList) {
+
+            // Normally what you would do here is make a call to your list adapter to give it the
+            // updated information now that is has returned from the thread. For now you can check
+            // logcat to see the result of println messages if you want to verify there is data
+            // in the classes
+            System.out.println("Here is where you update your adapter with " + shopList.getName());
+        }
+
+    }
 
 }
