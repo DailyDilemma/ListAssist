@@ -1,10 +1,8 @@
-package com.comp4350.listassist;
+package com.comp4350.listassist.presentation;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.app.Activity;
 import android.support.v4.content.ContextCompat;
@@ -14,6 +12,10 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.os.AsyncTask;
 import android.util.Log;
+
+import com.comp4350.listassist.R;
+import com.comp4350.listassist.objects.ShoppingList;
+
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
@@ -25,7 +27,7 @@ public class MainActivity extends Activity {
         setContentView(R.layout.app_main);
 
         // Calls the WebAPI on a separate thread to populate the initial list
-        new HttpRequestTask().execute();
+        new ListAPIHelper().execute();
 
     }
 
@@ -82,6 +84,15 @@ public class MainActivity extends Activity {
         TextView list_name = (TextView)((ViewGroup) view.getParent()).findViewById(R.id.list_name);
     }
 
+    public void refresh_table() {
+        ViewGroup list_table = (ViewGroup)findViewById(R.id.list_table);
+
+        list_table.removeAllViews();
+
+        new ListAPIHelper().execute();
+    }
+
+    // Table mutation methods
     private void color_table() {
         ViewGroup list_table = (ViewGroup)findViewById(R.id.list_table);
 
@@ -111,37 +122,53 @@ public class MainActivity extends Activity {
         list_table.addView(list_row_entry);
     }
 
-    // This class contains methods that run on a separate thread
-    private class HttpRequestTask extends AsyncTask<String, ShoppingList, Boolean> {
+    protected class ListAPIHelper extends AsyncTask<String, ShoppingList, Boolean> {
         // doInBackground is the function being called
         @Override
         protected Boolean doInBackground(String... params) {
             boolean success = false;
 
             try {
-                if(params.length == 0) {
-                    // Get all lists: use progress to
+                if (params.length == 0) {
+                    // Get all lists: use progress to push lists out
                     RestTemplate restTemplate = new RestTemplate();
                     restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
                     ShoppingList[] shopLists = restTemplate.getForObject("http://ec2-52-36-187-54.us-west-2.compute.amazonaws.com:8080/api/Lists", ShoppingList[].class);
 
-                    for(ShoppingList curr_list : shopLists) {
+                    for (ShoppingList curr_list : shopLists) {
                         publishProgress(curr_list);
                     }
 
                     success = true;
-                } else if(params.length == 2) {
+                } else if (params.length == 2) {
                     int id;
+                    String url;
+                    RestTemplate restTemplate;
+                    ShoppingList shopList;
+
                     switch (params[0]) {
                         case "delete":
                             id = Integer.parseInt(params[1]);
+                            url = "http://ec2-52-36-187-54.us-west-2.compute.amazonaws.com:8080/api/Lists?listId=" + id;
+                            restTemplate = new RestTemplate();
+                            restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+                            shopList = restTemplate.getForObject(url, ShoppingList.class);
+                            publishProgress(shopList);
                             break;
                         case "get":
                             id = Integer.parseInt(params[1]);
-                            String url = "http://ec2-52-36-187-54.us-west-2.compute.amazonaws.com:8080/api/Lists/" + id;
-                            RestTemplate restTemplate = new RestTemplate();
+                            url = "http://ec2-52-36-187-54.us-west-2.compute.amazonaws.com:8080/api/Lists/" + id;
+                            restTemplate = new RestTemplate();
                             restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
-                            ShoppingList shopList = restTemplate.getForObject(url, ShoppingList.class);
+                            shopList = restTemplate.getForObject(url, ShoppingList.class);
+                            publishProgress(shopList);
+                            break;
+                        case "make":
+                            id = Integer.parseInt(params[1]);
+                            url = "http://ec2-52-36-187-54.us-west-2.compute.amazonaws.com:8080/api/Lists/" + id;
+                            restTemplate = new RestTemplate();
+                            restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+                            shopList = restTemplate.getForObject(url, ShoppingList.class);
                             publishProgress(shopList);
                             break;
                         default:
@@ -162,7 +189,7 @@ public class MainActivity extends Activity {
             // updated information now that is has returned from the thread. For now you can check
             // logcat to see the result of println messages if you want to verify there is data
             // in the classes
-            if(progress.length == 1) {
+            if (progress.length == 1) {
                 append_list(progress[0]);
             }
         }
@@ -175,6 +202,5 @@ public class MainActivity extends Activity {
 
             boolean _success = success;
         }
-
     }
 }

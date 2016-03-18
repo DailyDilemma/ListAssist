@@ -1,4 +1,4 @@
-package com.comp4350.listassist;
+package com.comp4350.listassist.presentation;
 
 /**
  * Created by Daniel on 3/13/2016 for ListAssist.
@@ -20,6 +20,9 @@ import android.widget.CheckBox;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+
+import com.comp4350.listassist.R;
+import com.comp4350.listassist.objects.ShoppingList;
 
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
@@ -149,7 +152,7 @@ public class ViewActivity extends Activity {
     }
 
     // This class contains methods that run on a separate thread
-    private class HttpRequestTask extends AsyncTask<String, ShoppingList, Boolean> {
+    protected class ItemAPIHelper extends AsyncTask<String, ShoppingList, Boolean> {
         // doInBackground is the function being called
         @Override
         protected Boolean doInBackground(String... params) {

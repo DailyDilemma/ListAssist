@@ -1,6 +1,8 @@
-package com.comp4350.listassist;
+package com.comp4350.listassist.objects;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -13,56 +15,56 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Generated("org.jsonschema2pojo")
 @JsonPropertyOrder({
-        "Description",
-        "Checked"
+        "Name",
+        "ShoppingListItems"
 })
-public class ShoppingListItem {
+public class ShoppingList {
 
-    @JsonProperty("Description")
-    private Object Description;
-    @JsonProperty("Checked")
-    private Boolean Checked;
+    @JsonProperty("Name")
+    private String Name;
+    @JsonProperty("ShoppingListItems")
+    private List<ShoppingListItem> ShoppingListItems = new ArrayList<ShoppingListItem>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     /**
      *
      * @return
-     * The Description
+     * The Name
      */
-    @JsonProperty("Description")
-    public Object getDescription() {
-        return Description;
+    @JsonProperty("Name")
+    public String getName() {
+        return Name;
     }
 
     /**
      *
-     * @param Description
-     * The Description
+     * @param Name
+     * The Name
      */
-    @JsonProperty("Description")
-    public void setDescription(Object Description) {
-        this.Description = Description;
+    @JsonProperty("Name")
+    public void setName(String Name) {
+        this.Name = Name;
     }
 
     /**
      *
      * @return
-     * The Checked
+     * The ShoppingListItems
      */
-    @JsonProperty("Checked")
-    public Boolean getChecked() {
-        return Checked;
+    @JsonProperty("ShoppingListItems")
+    public List<ShoppingListItem> getShoppingListItems() {
+        return ShoppingListItems;
     }
 
     /**
      *
-     * @param Checked
-     * The Checked
+     * @param ShoppingListItems
+     * The ShoppingListItems
      */
-    @JsonProperty("Checked")
-    public void setChecked(Boolean Checked) {
-        this.Checked = Checked;
+    @JsonProperty("ShoppingListItems")
+    public void setShoppingListItems(List<ShoppingListItem> ShoppingListItems) {
+        this.ShoppingListItems = ShoppingListItems;
     }
 
     @JsonAnyGetter

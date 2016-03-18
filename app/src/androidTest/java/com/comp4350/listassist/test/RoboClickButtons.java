@@ -1,6 +1,7 @@
 package com.comp4350.listassist.test;
 
-import com.comp4350.listassist.MainActivity;
+import com.comp4350.listassist.presentation.MainActivity;
+import com.comp4350.listassist.presentation.ViewActivity;
 import com.robotium.solo.*;
 import android.test.ActivityInstrumentationTestCase2;
 
@@ -25,8 +26,8 @@ public class RoboClickButtons extends ActivityInstrumentationTestCase2<MainActiv
   	}
   
 	public void testRun() {
-        //Wait for activity: 'com.comp4350.listassist.MainActivity'
-		solo.waitForActivity(com.comp4350.listassist.MainActivity.class, 2000);
+        //Wait for activity: 'com.comp4350.listassist.presentation.MainActivity'
+		solo.waitForActivity(MainActivity.class, 2000);
         //Click on Delete
 		solo.clickOnView(solo.getView(com.comp4350.listassist.R.id.delete_button));
         //Click on Delete
@@ -35,8 +36,8 @@ public class RoboClickButtons extends ActivityInstrumentationTestCase2<MainActiv
 		solo.clickOnView(solo.getView(com.comp4350.listassist.R.id.delete_button, 2));
         //Click on Open
 		solo.clickOnView(solo.getView(com.comp4350.listassist.R.id.open_button, 2));
-        //Wait for activity: 'com.comp4350.listassist.ViewActivity'
-		assertTrue("com.comp4350.listassist.ViewActivity is not found!", solo.waitForActivity(com.comp4350.listassist.ViewActivity.class));
+        //Wait for activity: 'com.comp4350.listassist.presentation.ViewActivity'
+		assertTrue("com.comp4350.listassist.presentation.ViewActivity is not found!", solo.waitForActivity(ViewActivity.class));
         //Click on Test item 0
 		solo.clickOnView(solo.getView(com.comp4350.listassist.R.id.item));
         //Click on Test item 1
@@ -53,8 +54,8 @@ public class RoboClickButtons extends ActivityInstrumentationTestCase2<MainActiv
 		solo.goBack();
         //Click on Open
 		solo.clickOnView(solo.getView(com.comp4350.listassist.R.id.open_button, 1));
-        //Wait for activity: 'com.comp4350.listassist.ViewActivity'
-		assertTrue("com.comp4350.listassist.ViewActivity is not found!", solo.waitForActivity(com.comp4350.listassist.ViewActivity.class));
+        //Wait for activity: 'com.comp4350.listassist.presentation.ViewActivity'
+		assertTrue("com.comp4350.listassist.presentation.ViewActivity is not found!", solo.waitForActivity(ViewActivity.class));
         //Click on Test item 0
 		solo.clickOnView(solo.getView(com.comp4350.listassist.R.id.item));
         //Click on Test item 1
@@ -71,8 +72,8 @@ public class RoboClickButtons extends ActivityInstrumentationTestCase2<MainActiv
 		solo.goBack();
         //Click on Open
 		solo.clickOnView(solo.getView(com.comp4350.listassist.R.id.open_button));
-        //Wait for activity: 'com.comp4350.listassist.ViewActivity'
-		assertTrue("com.comp4350.listassist.ViewActivity is not found!", solo.waitForActivity(com.comp4350.listassist.ViewActivity.class));
+        //Wait for activity: 'com.comp4350.listassist.presentation.ViewActivity'
+		assertTrue("com.comp4350.listassist.presentation.ViewActivity is not found!", solo.waitForActivity(ViewActivity.class));
         //Click on Test item 0
 		solo.clickOnView(solo.getView(com.comp4350.listassist.R.id.item));
         //Click on Test item 1

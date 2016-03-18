@@ -1,4 +1,4 @@
-package com.comp4350.listassist;
+package com.comp4350.listassist.presentation;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -6,6 +6,8 @@ import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+
+import com.comp4350.listassist.R;
 
 /**
  * Created by Daniel on 3/16/2016 for ListAssist.
