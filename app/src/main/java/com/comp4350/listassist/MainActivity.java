@@ -10,6 +10,7 @@ import android.app.Activity;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -79,6 +80,20 @@ public class MainActivity extends Activity {
     public void delete_list(View view) {
         //TODO: Remove list with api call, refresh lists
         TextView list_name = (TextView)((ViewGroup) view.getParent()).findViewById(R.id.list_name);
+    }
+
+    private void color_table() {
+        ViewGroup list_table = (ViewGroup)findViewById(R.id.list_table);
+
+        for(int i = 0; i < list_table.getChildCount(); i++) {
+            TableRow curr_row = (TableRow)list_table.getChildAt(i);
+
+            if(i % 2 == 0) {
+                curr_row.setBackground(getDrawable(R.drawable.banner_even));
+            } else {
+                curr_row.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimaryLight));
+            }
+        }
     }
 
     private void append_list(ShoppingList item) {
@@ -156,6 +171,8 @@ public class MainActivity extends Activity {
         // is returned as an argument to this method
         @Override
         protected void onPostExecute(Boolean success) {
+            color_table();
+
             boolean _success = success;
         }
 
