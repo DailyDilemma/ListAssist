@@ -18,23 +18,29 @@
         android:paddingBottom="10dp"
         android:background="@color/colorPrimaryDark" />
 
-    <TableLayout
+    <ScrollView
         android:layout_width="fill_parent"
         android:layout_height="0dp"
-        android:id="@+id/list_table"
-        android:layout_marginTop="15dp"
-        android:weightSum="1"
+        android:id="@+id/scrollView"
         android:layout_weight="1"
-        android:nestedScrollingEnabled="true"
-        android:scrollIndicators="right">
+        android:layout_marginTop="10dp">
 
-    </TableLayout>
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/list_table"
+            android:layout_marginTop="15dp"
+            android:weightSum="1"
+            android:nestedScrollingEnabled="true"
+            android:scrollIndicators="right">
+
+        </TableLayout>
+    </ScrollView>
 
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="right"
         android:weightSum="10"
         android:baselineAligned="false"
         android:gravity="end">

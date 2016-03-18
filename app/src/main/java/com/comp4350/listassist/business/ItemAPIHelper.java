@@ -12,7 +12,7 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.comp4350.listassist.R;
-import com.comp4350.listassist.objects.LAItem;
+import com.comp4350.listassist.objects.ShoppingListItem;
 import com.comp4350.listassist.objects.LAList;
 import com.comp4350.listassist.presentation.ViewActivity;
 
@@ -25,8 +25,8 @@ import org.springframework.web.client.RestTemplate;
 public class ItemAPIHelper extends AsyncTask<String, LAList, Boolean> {
     /*
     * Use:
-    *   new ItemAPIHelper(LAItem new_item).execute({listId});
-    *       - add item LAItem to listId
+    *   new ItemAPIHelper(ShoppingListItem new_item).execute({listId});
+    *       - add item ShoppingListItem to listId
     *
     *   new ItemAPIHelper(Activity context).execute();
     *       - refresh list information and fill out R.id.item_table
@@ -39,7 +39,7 @@ public class ItemAPIHelper extends AsyncTask<String, LAList, Boolean> {
     * */
     private TableLayout item_table;
     private ViewActivity context;
-    private LAItem new_item;
+    private ShoppingListItem new_item;
 
     public ItemAPIHelper() {
         this.context = null;
@@ -53,7 +53,7 @@ public class ItemAPIHelper extends AsyncTask<String, LAList, Boolean> {
         this.item_table = (TableLayout)context.findViewById(R.id.item_table);
     }
 
-    public ItemAPIHelper(LAItem new_item) {
+    public ItemAPIHelper(ShoppingListItem new_item) {
         this();
         this.new_item = new_item;
     }
@@ -169,11 +169,11 @@ public class ItemAPIHelper extends AsyncTask<String, LAList, Boolean> {
     private void set_list(LAList list) {
         // Dynamically add lists
         if(context != null) {
-            if( list.getId() != null && !list.getId().equals("") ) {
+            if( list.getId() != null ) {
                 ((TextView) context.findViewById(R.id.list_name)).setText(list.getName());
 
-                for (LAItem item : list.getLAItems()) {
-                    if(item.getId() != null && item.getId().equals("")) {
+                for (ShoppingListItem item : list.getShoppingListItems()) {
+                    if(item.getId() != null) {
                         LayoutInflater inflater = (LayoutInflater) context.getSystemService
                                 (Context.LAYOUT_INFLATER_SERVICE);
 
@@ -181,11 +181,11 @@ public class ItemAPIHelper extends AsyncTask<String, LAList, Boolean> {
                                 R.layout.list_item, item_table, false
                         );
 
-                        String msg = item.getDescription().toString() + " has ID = " + item.getId().toString();
+                        String msg = item.getDescription() + " has ID = " + item.getId().toString();
                         Log.i("ItemAPIHelper", msg);
 
                         CheckBox tv = (CheckBox) list_item.findViewById(R.id.item);
-                        tv.setText(item.getDescription().toString());
+                        tv.setText(item.getDescription());
                         tv.setTag(item.getId().toString());
 
                         if (item.getChecked()) {
@@ -194,7 +194,8 @@ public class ItemAPIHelper extends AsyncTask<String, LAList, Boolean> {
 
                         item_table.addView(list_item);
                     } else {
-                        Log.e("ItemAPIHelper", "Failure to get item id");
+                        String desc = item.getDescription();
+                        Log.e("ItemAPIHelper", "Failure to get id for item " + desc);
                     }
                 }
             } else {

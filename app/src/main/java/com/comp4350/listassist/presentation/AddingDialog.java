@@ -12,7 +12,7 @@ import android.widget.Toast;
 import com.comp4350.listassist.R;
 import com.comp4350.listassist.business.ItemAPIHelper;
 import com.comp4350.listassist.business.ListAPIHelper;
-import com.comp4350.listassist.objects.LAItem;
+import com.comp4350.listassist.objects.ShoppingListItem;
 
 /**
  * Created by Daniel on 3/16/2016 for ListAssist.
@@ -61,16 +61,16 @@ public class AddingDialog extends DialogFragment {
                         EditText name_field = (EditText)((AlertDialog)dialog).findViewById(R.id.new_name);
                         String inp_name = name_field.getText().toString();
 
-                        if(call_type.equals("list")) {
+                        if(call_type != null && call_type.equals("list")) {
                             if(!inp_name.equals("")) {
                                 new ListAPIHelper().execute("make", inp_name);
                                 MainActivity.refresh_table();
                             } else {
                                 Toast.makeText(((AlertDialog) dialog).getContext(), "Can't add list, name not valid.", Toast.LENGTH_SHORT).show();
                             }
-                        } else if(call_type.equals("item")) {
+                        } else if(call_type != null && call_type.equals("item")) {
                             if(!inp_name.equals("")) {
-                                LAItem new_item = new LAItem();
+                                ShoppingListItem new_item = new ShoppingListItem();
                                 new_item.setChecked(false);
                                 new_item.setDescription(inp_name);
                                 new ItemAPIHelper(new_item).execute(getArguments().getString("listId"));

@@ -18,7 +18,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
         "Id",
         "ListId"
 })
-public class LAItem {
+public class ShoppingListItem {
 
     @JsonProperty("Description")
     private String Description;

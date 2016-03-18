@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @Generated("org.jsonschema2pojo")
 @JsonPropertyOrder({
         "Name",
-        "LAItem",
+        "ShoppingListItems",
         "Id"
 })
 public class LAList {
@@ -24,7 +24,7 @@ public class LAList {
     @JsonProperty("Name")
     private String Name;
     @JsonProperty("ShoppingListItems")
-    private List<LAItem> LAItems = new ArrayList<LAItem>();
+    private List<ShoppingListItem> ShoppingListItems = new ArrayList<ShoppingListItem>();
     @JsonProperty("Id")
     private Integer Id;
     @JsonIgnore
@@ -53,21 +53,21 @@ public class LAList {
     /**
      *
      * @return
-     * The LAItem
+     * The ShoppingListItems
      */
     @JsonProperty("ShoppingListItems")
-    public List<com.comp4350.listassist.objects.LAItem> getLAItems() {
-        return LAItems;
+    public List<ShoppingListItem> getShoppingListItems() {
+        return ShoppingListItems;
     }
 
     /**
      *
-     * @param LAItem
-     * The LAItem
+     * @param ShoppingListItems
+     * The ShoppingListItems
      */
     @JsonProperty("ShoppingListItems")
-    public void setLAItems(List<LAItem> LAItem) {
-        this.LAItems = LAItem;
+    public void setShoppingListItems(List<ShoppingListItem> ShoppingListItems) {
+        this.ShoppingListItems = ShoppingListItems;
     }
 
     /**

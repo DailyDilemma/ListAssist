@@ -143,7 +143,7 @@ public class ListAPIHelper extends AsyncTask<String, LAList, Boolean> {
     private void append_list(LAList list) {
         // Dynamically add lists
         if(context != null) {
-            if( list.getId() != null && !list.getId().equals("") ) {
+            if( list.getId() != null ) {
                 LayoutInflater inflater = (LayoutInflater) context.getSystemService
                         (Context.LAYOUT_INFLATER_SERVICE);
 
