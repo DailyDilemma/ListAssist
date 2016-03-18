@@ -151,9 +151,12 @@ public class ListAPIHelper extends AsyncTask<String, LAList, Boolean> {
                         R.layout.list_row_entry, list_table, false
                 );
 
-                list_row_entry.setTag(list.getId());
-                TextView tv = (TextView) list_row_entry.findViewById(R.id.list_name);
 
+                list_row_entry.setTag(list.getId());
+
+                Log.i("ListAPIHelper", list.getName() + " has ID " + list_row_entry.getTag().toString());
+
+                TextView tv = (TextView) list_row_entry.findViewById(R.id.list_name);
                 tv.setText(list.getName());
 
                 list_table.addView(list_row_entry);

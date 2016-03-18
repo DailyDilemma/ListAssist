@@ -66,7 +66,7 @@ public class ViewActivity extends Activity {
     }
 
     public void delete_item(View view) {
-        Object tag = ((ViewGroup)view.getParent()).getTag();
+        Object tag = view.getTag();
 
         if(tag != null) {
             String itemId = tag.toString();

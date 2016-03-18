@@ -65,10 +65,11 @@ public class ItemAPIHelper extends AsyncTask<String, LAList, Boolean> {
 
         try {
             if (params.length == 0) {
-                // Get all lists: use progress to push lists out
+                // Get List
+                String listId = context.getIntent().getStringExtra("listId");
                 RestTemplate restTemplate = new RestTemplate();
                 restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
-                LAList LAList = restTemplate.getForObject("http://ec2-52-36-187-54.us-west-2.compute.amazonaws.com:8080/api/Lists/5", LAList.class);
+                LAList LAList = restTemplate.getForObject("http://ec2-52-36-187-54.us-west-2.compute.amazonaws.com:8080/api/Lists/" + listId, LAList.class);
 
                 publishProgress(LAList);
 
@@ -180,10 +181,12 @@ public class ItemAPIHelper extends AsyncTask<String, LAList, Boolean> {
                                 R.layout.list_item, item_table, false
                         );
 
-                        list_item.setTag(item.getId());
+                        String msg = item.getDescription().toString() + " has ID = " + item.getId().toString();
+                        Log.i("ItemAPIHelper", msg);
 
                         CheckBox tv = (CheckBox) list_item.findViewById(R.id.item);
                         tv.setText(item.getDescription().toString());
+                        tv.setTag(item.getId().toString());
 
                         if (item.getChecked()) {
                             context.check_item(tv);

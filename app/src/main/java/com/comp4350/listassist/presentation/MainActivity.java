@@ -73,7 +73,7 @@ public class MainActivity extends Activity {
 
     public void open_list(View view) {
         // Open a list
-        Object tag =  ((ViewGroup) view.getParent()).getTag();
+        Object tag = ((ViewGroup) view.getParent()).getTag();
 
         if(tag != null) {
             String id = tag.toString();
@@ -89,7 +89,7 @@ public class MainActivity extends Activity {
     }
 
     public void delete_list(View view) {
-        Object tag =  ((ViewGroup) view.getParent()).getTag();
+        Object tag = ((ViewGroup) view.getParent()).getTag();
 
         if( tag != null) {
             String id = tag.toString();
