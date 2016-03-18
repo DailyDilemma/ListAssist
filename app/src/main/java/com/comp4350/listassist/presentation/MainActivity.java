@@ -23,6 +23,7 @@ import org.springframework.web.client.RestTemplate;
 
 public class MainActivity extends Activity {
     public static TableLayout list_table;
+    private static MainActivity self;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -33,8 +34,8 @@ public class MainActivity extends Activity {
         list_table = (TableLayout)findViewById(R.id.list_table);
 
         // Calls the WebAPI on a separate thread to populate the initial list
-        new ListAPIHelper(list_table).execute();
-
+        new ListAPIHelper(this).execute();
+        self = this;
     }
 
     @Override
@@ -82,14 +83,16 @@ public class MainActivity extends Activity {
         Intent list = new Intent(this, ViewActivity.class);
         TextView list_name = (TextView)((ViewGroup) view.getParent()).findViewById(R.id.list_name);
         list.putExtra("name", list_name.getText().toString());
-        //TODO: add id once implemented - list.putExra("id", id);
+        //TODO: change id once implemented
+        list.putExtra("listId", "5");
+
         startActivity(list);
     }
 
     public void delete_list(View view) {
-        //TODO: Remove list with api call
         TextView list_name = (TextView)((ViewGroup) view.getParent()).findViewById(R.id.list_name);
-        new ListAPIHelper(list_table).execute("delete"); // Add id once implemented
+        new ListAPIHelper(this).execute("delete"); // Add id once implemented
+
         refresh_table();
     }
 
@@ -100,8 +103,6 @@ public class MainActivity extends Activity {
     public static void refresh_table() {
         list_table.removeAllViews();
 
-        new ListAPIHelper(list_table).execute();
+        new ListAPIHelper(self).execute();
     }
-
-
 }

@@ -29,19 +29,30 @@ import java.util.Set;
  * Created by Daniel on 3/17/2016 for app.
  */
 public class ListAPIHelper extends AsyncTask<String, ShoppingList, Boolean> {
+    /*
+    * Use:
+    *   new ItemAPIHelper([Activity context]).execute("make", {listName});
+    *       - make a list with the specified name
+    *
+    *    new ItemAPIHelper([Activity context]).execute("delete", {itemId});
+    *       - deletes list specified by listId
+    *
+    *   new ItemAPIHelper(Activity context).execute();
+    *       - puts all lists into the activity in R.id.list_table
+    * */
     private TableLayout list_table;
-    private Context curr_context;
+    private Context context;
 
     public ListAPIHelper() {
         // Used for make when context of app isn't needed
         list_table = null;
-        curr_context = null;
+        context = null;
     }
 
-    public ListAPIHelper(TableLayout list_table) {
+    public ListAPIHelper(Activity context) {
         // Used for getting, all returned objects are put in the tablelayout passed in
-        this.list_table = list_table;
-        this.curr_context = list_table.getContext();
+        this.context = context;
+        this.list_table = (TableLayout)context.findViewById(R.id.list_table);
     }
 
     // doInBackground is the function being called
@@ -139,8 +150,8 @@ public class ListAPIHelper extends AsyncTask<String, ShoppingList, Boolean> {
 
     private void append_list(ShoppingList item) {
         // Dynamically add lists
-        if(curr_context != null) {
-            LayoutInflater inflater = (LayoutInflater) curr_context.getSystemService
+        if(context != null) {
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService
                     (Context.LAYOUT_INFLATER_SERVICE);
 
             View list_row_entry = inflater.inflate(

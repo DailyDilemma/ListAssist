@@ -24,12 +24,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.comp4350.listassist.R;
+import com.comp4350.listassist.business.ItemAPIHelper;
+import com.comp4350.listassist.business.ListAPIHelper;
 import com.comp4350.listassist.objects.ShoppingList;
 
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
 public class ViewActivity extends Activity {
+    private static ViewActivity self;
+    private static TableLayout item_table;
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,28 +44,10 @@ public class ViewActivity extends Activity {
         String list_name = intent.getStringExtra("name");
         setContentView(R.layout.view_list);
 
-        ((TextView)this.findViewById(R.id.list_name)).setText(list_name);
+        self = this;
+        item_table = (TableLayout)this.findViewById(R.id.item_table);
 
-        //TODO: Add api call to get list items
-
-        // Dynamically add list items
-        ViewGroup item_table = (ViewGroup)findViewById(R.id.item_table);
-        for(int i = 0; i < 3; i++) {
-            View item_row_entry = getLayoutInflater().inflate(
-                    R.layout.list_item, item_table, false
-            );
-
-            TextView tv = (TextView)item_row_entry.findViewById(R.id.item);
-
-            tv.setText("Test item " + i);
-
-            if(i %2 == 0){
-                Drawable background = ContextCompat.getDrawable(this, R.drawable.banner_even);
-                item_row_entry.setBackground(background);
-            }
-
-            item_table.addView(item_row_entry, i);
-        }
+        new ItemAPIHelper(this).execute();
     }
 
     @Override
@@ -89,7 +77,11 @@ public class ViewActivity extends Activity {
     }
 
     public void delete_item(View view) {
-        //TODO: Remove an item from the list with api call, refresh list
+        //TODO: Change itemId to reflect context
+        String itemId = "0";
+        new ItemAPIHelper(this).execute("delete", itemId);
+
+        refresh_items();
     }
 
     public void check_item(View view) {
@@ -119,111 +111,18 @@ public class ViewActivity extends Activity {
             ft.remove(prev);
         }
         ft.addToBackStack(null);
-
-        AddingDialog list_dialog = AddingDialog.newInstance("New Item", "item");
+        String listId = getIntent().getStringExtra("listId");
+        AddingDialog list_dialog = AddingDialog.newInstance(listId, "New Item", "item");
         list_dialog.show(ft, "dialog");
     }
 
-    //TODO: move into ItemAPIHelper - see ListAPIHelper for example
-    private void color_table() {
-        ViewGroup list_table = (ViewGroup)findViewById(R.id.item_table);
-
-        for(int i = 0; i < list_table.getChildCount(); i++) {
-            TableRow curr_row = (TableRow)list_table.getChildAt(i);
-
-            if(i % 2 == 0) {
-                curr_row.setBackground(getDrawable(R.drawable.banner_even));
-            } else {
-                curr_row.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimaryLight));
-            }
-        }
+    public void refresh_items(View view) {
+        refresh_items();
     }
 
-    //TODO: move into ItemAPIHelper - see ListAPIHelper for example
-    private void append_list(ShoppingList item) {
-        // Dynamically add lists
-        ViewGroup list_table = (ViewGroup)findViewById(R.id.item_table);
+    public static void refresh_items() {
+        item_table.removeAllViews();
 
-        View list_row_entry = getLayoutInflater().inflate(
-                R.layout.list_item, list_table, false
-        );
-
-        TextView tv = (TextView)list_row_entry.findViewById(R.id.list_name);
-
-        tv.setText(item.getName());
-
-        list_table.addView(list_row_entry);
-    }
-
-    public void refresh_list(View view) {
-        //TODO: Call API to get all list items again
-        Toast.makeText(this, "CNot implemented.", Toast.LENGTH_SHORT).show();
-    }
-
-    // This class contains methods that run on a separate thread
-    protected class ItemAPIHelper extends AsyncTask<String, ShoppingList, Boolean> {
-        // doInBackground is the function being called
-        @Override
-        protected Boolean doInBackground(String... params) {
-            boolean success = false;
-
-            try {
-                if(params.length == 0) {
-                    // Get all lists: use progress to
-                    RestTemplate restTemplate = new RestTemplate();
-                    restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
-                    ShoppingList[] shopLists = restTemplate.getForObject("http://ec2-52-36-187-54.us-west-2.compute.amazonaws.com:8080/api/Lists", ShoppingList[].class);
-
-                    for(ShoppingList curr_list : shopLists) {
-                        publishProgress(curr_list);
-                    }
-
-                    success = true;
-                } else if(params.length == 2) {
-                    int id;
-                    switch (params[0]) {
-                        case "delete":
-                            id = Integer.parseInt(params[1]);
-                            break;
-                        case "get":
-                            id = Integer.parseInt(params[1]);
-                            String url = "http://ec2-52-36-187-54.us-west-2.compute.amazonaws.com:8080/api/Lists/" + id;
-                            RestTemplate restTemplate = new RestTemplate();
-                            restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
-                            ShoppingList shopList = restTemplate.getForObject(url, ShoppingList.class);
-                            publishProgress(shopList);
-                            break;
-                        default:
-                            break;
-                    }
-                }
-            } catch (Exception e) {
-                Log.e("MainActivity", e.getMessage(), e);
-            }
-
-            return success;
-        }
-
-        // When getting all lists, update progress with single list and add it to the app
-        @Override
-        protected void onProgressUpdate(ShoppingList... progress) {
-            // Normally what you would do here is make a call to your list adapter to give it the
-            // updated information now that is has returned from the thread. For now you can check
-            // logcat to see the result of println messages if you want to verify there is data
-            // in the classes
-            if(progress.length == 1) {
-                append_list(progress[0]);
-            }
-        }
-
-        // onPostExecute is what happens when the thread is complete. The result of 'doInBackground'
-        // is returned as an argument to this method
-        @Override
-        protected void onPostExecute(Boolean success) {
-            color_table();
-
-            boolean _success = success;
-        }
-
+        new ItemAPIHelper(self).execute();
     }
 }

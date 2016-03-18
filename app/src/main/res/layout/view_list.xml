@@ -42,7 +42,7 @@
             android:layout_height="match_parent"
             android:id="@+id/refresh_list"
             android:src="@mipmap/refresh_icn"
-            android:onClick="refresh_list"
+            android:onClick="refresh_items"
             android:nestedScrollingEnabled="false"
             android:background="@drawable/def_button"
             android:contentDescription="@string/refresh_desc"
