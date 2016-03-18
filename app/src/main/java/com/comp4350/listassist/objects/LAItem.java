@@ -14,44 +14,30 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @Generated("org.jsonschema2pojo")
 @JsonPropertyOrder({
         "Description",
-        "Checked"
+        "Checked",
+        "Id",
+        "ListId"
 })
 public class LAItem {
 
-    @JsonProperty("id")
-    private String id;
     @JsonProperty("Description")
-    private Object Description;
+    private String Description;
     @JsonProperty("Checked")
     private Boolean Checked;
+    @JsonProperty("Id")
+    private Integer Id;
+    @JsonProperty("ListId")
+    private Integer ListId;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     /**
      *
      * @return
-     * The ID
-     */
-    @JsonProperty("id")
-    public String getId() {
-        return id;
-    }
-
-    /**
-     *
-     * @param Description
-     * The Description
-     */
-    @JsonProperty("id")
-    public void setId(String id) { this.id = id; }
-
-    /**
-     *
-     * @return
      * The Description
      */
     @JsonProperty("Description")
-    public Object getDescription() {
+    public String getDescription() {
         return Description;
     }
 
@@ -61,7 +47,7 @@ public class LAItem {
      * The Description
      */
     @JsonProperty("Description")
-    public void setDescription(Object Description) {
+    public void setDescription(String Description) {
         this.Description = Description;
     }
 
@@ -83,6 +69,46 @@ public class LAItem {
     @JsonProperty("Checked")
     public void setChecked(Boolean Checked) {
         this.Checked = Checked;
+    }
+
+    /**
+     *
+     * @return
+     * The Id
+     */
+    @JsonProperty("Id")
+    public Integer getId() {
+        return Id;
+    }
+
+    /**
+     *
+     * @param Id
+     * The Id
+     */
+    @JsonProperty("Id")
+    public void setId(Integer Id) {
+        this.Id = Id;
+    }
+
+    /**
+     *
+     * @return
+     * The ListId
+     */
+    @JsonProperty("ListId")
+    public Integer getListId() {
+        return ListId;
+    }
+
+    /**
+     *
+     * @param ListId
+     * The ListId
+     */
+    @JsonProperty("ListId")
+    public void setListId(Integer ListId) {
+        this.ListId = ListId;
     }
 
     @JsonAnyGetter

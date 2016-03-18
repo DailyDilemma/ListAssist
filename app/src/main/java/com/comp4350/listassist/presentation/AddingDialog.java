@@ -62,7 +62,6 @@ public class AddingDialog extends DialogFragment {
                         String inp_name = name_field.getText().toString();
 
                         if(call_type.equals("list")) {
-                            //TODO: Add list with api call
                             if(!inp_name.equals("")) {
                                 new ListAPIHelper().execute("make", inp_name);
                                 MainActivity.refresh_table();
@@ -70,7 +69,6 @@ public class AddingDialog extends DialogFragment {
                                 Toast.makeText(((AlertDialog) dialog).getContext(), "Can't add list, name not valid.", Toast.LENGTH_SHORT).show();
                             }
                         } else if(call_type.equals("item")) {
-                            //TODO: Add item with api call
                             if(!inp_name.equals("")) {
                                 LAItem new_item = new LAItem();
                                 new_item.setChecked(false);

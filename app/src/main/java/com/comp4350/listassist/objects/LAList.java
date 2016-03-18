@@ -16,17 +16,17 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @Generated("org.jsonschema2pojo")
 @JsonPropertyOrder({
         "Name",
-        "ShoppingListItems"
+        "LAItem",
+        "Id"
 })
-
 public class LAList {
 
     @JsonProperty("Name")
     private String Name;
-    @JsonProperty("id")
-    private String id;
     @JsonProperty("ShoppingListItems")
-    private List<LAItem> ShoppingListItems = new ArrayList<LAItem>();
+    private List<LAItem> LAItems = new ArrayList<LAItem>();
+    @JsonProperty("Id")
+    private Integer Id;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -53,37 +53,41 @@ public class LAList {
     /**
      *
      * @return
-     * The Id
-     */
-    @JsonProperty("id")
-    public String getId() { return id; }
-
-    /**
-     *
-     * @return
-     * The Id
-     */
-    @JsonProperty("id")
-    public void setId(String id) { this.id = id; }
-
-    /**
-     *
-     * @return
-     * The ShoppingListItems
+     * The LAItem
      */
     @JsonProperty("ShoppingListItems")
-    public List<LAItem> getShoppingListItems() {
-        return ShoppingListItems;
+    public List<com.comp4350.listassist.objects.LAItem> getLAItems() {
+        return LAItems;
     }
 
     /**
      *
-     * @param ShoppingListItems
-     * The LAItems
+     * @param LAItem
+     * The LAItem
      */
     @JsonProperty("ShoppingListItems")
-    public void setShoppingListItems(List<LAItem> ShoppingListItems) {
-        this.ShoppingListItems = ShoppingListItems;
+    public void setLAItems(List<LAItem> LAItem) {
+        this.LAItems = LAItem;
+    }
+
+    /**
+     *
+     * @return
+     * The Id
+     */
+    @JsonProperty("Id")
+    public Integer getId() {
+        return Id;
+    }
+
+    /**
+     *
+     * @param Id
+     * The Id
+     */
+    @JsonProperty("Id")
+    public void setId(Integer Id) {
+        this.Id = Id;
     }
 
     @JsonAnyGetter

@@ -171,7 +171,7 @@ public class ItemAPIHelper extends AsyncTask<String, LAList, Boolean> {
             if( list.getId() != null && !list.getId().equals("") ) {
                 ((TextView) context.findViewById(R.id.list_name)).setText(list.getName());
 
-                for (LAItem item : list.getShoppingListItems()) {
+                for (LAItem item : list.getLAItems()) {
                     if(item.getId() != null && item.getId().equals("")) {
                         LayoutInflater inflater = (LayoutInflater) context.getSystemService
                                 (Context.LAYOUT_INFLATER_SERVICE);
