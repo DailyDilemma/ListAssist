@@ -39,7 +39,7 @@
 
         <ImageButton
             style="@style/Widget.AppCompat.Button.Borderless.Colored"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:id="@+id/refresh_view"
             android:src="@mipmap/refresh_icn"
@@ -48,12 +48,12 @@
             android:background="@drawable/def_button"
             android:contentDescription="@string/refresh_desc"
             android:layout_gravity="right"
-            android:layout_weight="0.05"
+            android:layout_weight="2"
             android:baselineAlignBottom="false"
             android:layout_marginRight="5dp" />
 
         <ImageButton
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:id="@+id/new_list_button"
             android:src="@mipmap/add_list_icn"
@@ -63,7 +63,7 @@
             style="@style/Widget.AppCompat.Button.Borderless.Colored"
             android:background="@drawable/def_button"
             android:layout_gravity="right"
-            android:layout_weight="0.05" />
+            android:layout_weight="2" />
 
     </LinearLayout>
 

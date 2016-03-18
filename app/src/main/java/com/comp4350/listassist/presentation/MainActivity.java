@@ -82,13 +82,15 @@ public class MainActivity extends Activity {
         Intent list = new Intent(this, ViewActivity.class);
         TextView list_name = (TextView)((ViewGroup) view.getParent()).findViewById(R.id.list_name);
         list.putExtra("name", list_name.getText().toString());
+        //TODO: add id once implemented - list.putExra("id", id);
         startActivity(list);
     }
 
     public void delete_list(View view) {
-        //TODO: Remove list with api call, refresh lists
+        //TODO: Remove list with api call
         TextView list_name = (TextView)((ViewGroup) view.getParent()).findViewById(R.id.list_name);
         new ListAPIHelper(list_table).execute("delete"); // Add id once implemented
+        refresh_table();
     }
 
     public void refresh_list(View view) {

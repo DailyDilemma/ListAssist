@@ -4,6 +4,7 @@ package com.comp4350.listassist.presentation;
  * Created by Daniel on 3/13/2016 for ListAssist.
  */
 
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
@@ -20,6 +21,7 @@ import android.widget.CheckBox;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.comp4350.listassist.R;
 import com.comp4350.listassist.objects.ShoppingList;
@@ -122,6 +124,7 @@ public class ViewActivity extends Activity {
         list_dialog.show(ft, "dialog");
     }
 
+    //TODO: move into ItemAPIHelper - see ListAPIHelper for example
     private void color_table() {
         ViewGroup list_table = (ViewGroup)findViewById(R.id.item_table);
 
@@ -136,6 +139,7 @@ public class ViewActivity extends Activity {
         }
     }
 
+    //TODO: move into ItemAPIHelper - see ListAPIHelper for example
     private void append_list(ShoppingList item) {
         // Dynamically add lists
         ViewGroup list_table = (ViewGroup)findViewById(R.id.item_table);
@@ -149,6 +153,11 @@ public class ViewActivity extends Activity {
         tv.setText(item.getName());
 
         list_table.addView(list_row_entry);
+    }
+
+    public void refresh_list(View view) {
+        //TODO: Call API to get all list items again
+        Toast.makeText(this, "CNot implemented.", Toast.LENGTH_SHORT).show();
     }
 
     // This class contains methods that run on a separate thread

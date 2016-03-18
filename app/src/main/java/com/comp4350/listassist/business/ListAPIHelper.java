@@ -33,11 +33,13 @@ public class ListAPIHelper extends AsyncTask<String, ShoppingList, Boolean> {
     private Context curr_context;
 
     public ListAPIHelper() {
+        // Used for make when context of app isn't needed
         list_table = null;
         curr_context = null;
     }
 
     public ListAPIHelper(TableLayout list_table) {
+        // Used for getting, all returned objects are put in the tablelayout passed in
         this.list_table = list_table;
         this.curr_context = list_table.getContext();
     }
@@ -60,14 +62,13 @@ public class ListAPIHelper extends AsyncTask<String, ShoppingList, Boolean> {
 
                 success = true;
             } else if (params.length == 2) {
-                int id;
                 String url;
                 RestTemplate restTemplate;
                 ShoppingList shopList;
 
                 switch (params[0]) {
                     case "delete":
-                        id = Integer.parseInt(params[1]);
+                        String id = params[1];
                         url = "http://ec2-52-36-187-54.us-west-2.compute.amazonaws.com:8080/api/Lists?listId=" + id;
                         restTemplate = new RestTemplate();
                         restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
@@ -77,6 +78,7 @@ public class ListAPIHelper extends AsyncTask<String, ShoppingList, Boolean> {
                     case "make":
                         String new_list_name = params[1];
                         url = "http://ec2-52-36-187-54.us-west-2.compute.amazonaws.com:8080/api/Lists?listName=" + new_list_name;
+
                         restTemplate = new RestTemplate();
                         restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
 
@@ -84,6 +86,8 @@ public class ListAPIHelper extends AsyncTask<String, ShoppingList, Boolean> {
 
                         if(response < 300 && response > 199) {
                             success = true;
+                        } else {
+                            Log.e("ListAPIHelper", response + ": " + url);
                         }
                         break;
                     default:
@@ -91,7 +95,7 @@ public class ListAPIHelper extends AsyncTask<String, ShoppingList, Boolean> {
                 }
             }
         } catch (Exception e) {
-            Log.e("MainActivity", e.getMessage(), e);
+            Log.e("ListAPIHelper", e.getMessage(), e);
         }
 
         return success;

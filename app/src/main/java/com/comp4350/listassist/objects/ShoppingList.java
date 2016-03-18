@@ -18,6 +18,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
         "Name",
         "ShoppingListItems"
 })
+
 public class ShoppingList {
 
     @JsonProperty("Name")
