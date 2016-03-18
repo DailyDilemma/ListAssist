@@ -4,32 +4,21 @@ package com.comp4350.listassist.presentation;
  * Created by Daniel on 3/13/2016 for ListAssist.
  */
 
-import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.graphics.Paint;
-import android.graphics.drawable.Drawable;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.TableLayout;
 import android.widget.TableRow;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.comp4350.listassist.R;
 import com.comp4350.listassist.business.ItemAPIHelper;
-import com.comp4350.listassist.business.ListAPIHelper;
-import com.comp4350.listassist.objects.ShoppingList;
-
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.web.client.RestTemplate;
 
 public class ViewActivity extends Activity {
     private static ViewActivity self;
@@ -77,11 +66,16 @@ public class ViewActivity extends Activity {
     }
 
     public void delete_item(View view) {
-        //TODO: Change itemId to reflect context
-        String itemId = "0";
-        new ItemAPIHelper(this).execute("delete", itemId);
+        Object tag = ((ViewGroup)view.getParent()).getTag();
 
-        refresh_items();
+        if(tag != null) {
+            String itemId = tag.toString();
+            new ItemAPIHelper(this).execute("delete", itemId);
+
+            refresh_items();
+        } else {
+            Log.e("ViewActivity", "Failure to get id for deleting item");
+        }
     }
 
     public void check_item(View view) {

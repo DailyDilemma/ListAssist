@@ -1,6 +1,5 @@
 package com.comp4350.listassist.presentation;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -13,8 +12,7 @@ import android.widget.Toast;
 import com.comp4350.listassist.R;
 import com.comp4350.listassist.business.ItemAPIHelper;
 import com.comp4350.listassist.business.ListAPIHelper;
-import com.comp4350.listassist.objects.ShoppingList;
-import com.comp4350.listassist.objects.ShoppingListItem;
+import com.comp4350.listassist.objects.LAItem;
 
 /**
  * Created by Daniel on 3/16/2016 for ListAssist.
@@ -74,7 +72,7 @@ public class AddingDialog extends DialogFragment {
                         } else if(call_type.equals("item")) {
                             //TODO: Add item with api call
                             if(!inp_name.equals("")) {
-                                ShoppingListItem new_item = new ShoppingListItem();
+                                LAItem new_item = new LAItem();
                                 new_item.setChecked(false);
                                 new_item.setDescription(inp_name);
                                 new ItemAPIHelper(new_item).execute(getArguments().getString("listId"));

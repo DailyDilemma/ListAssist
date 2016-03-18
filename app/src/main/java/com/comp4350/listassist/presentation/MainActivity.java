@@ -5,21 +5,14 @@ import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.app.Activity;
-import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TableLayout;
-import android.widget.TableRow;
 import android.widget.TextView;
-import android.os.AsyncTask;
-import android.util.Log;
 
 import com.comp4350.listassist.R;
 import com.comp4350.listassist.business.ListAPIHelper;
-import com.comp4350.listassist.objects.ShoppingList;
-
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.web.client.RestTemplate;
 
 public class MainActivity extends Activity {
     public static TableLayout list_table;
@@ -80,18 +73,30 @@ public class MainActivity extends Activity {
 
     public void open_list(View view) {
         // Open a list
-        Intent list = new Intent(this, ViewActivity.class);
-        TextView list_name = (TextView)((ViewGroup) view.getParent()).findViewById(R.id.list_name);
-        list.putExtra("name", list_name.getText().toString());
-        //TODO: change id once implemented
-        list.putExtra("listId", "5");
+        Object tag =  ((ViewGroup) view.getParent()).getTag();
 
-        startActivity(list);
+        if(tag != null) {
+            String id = tag.toString();
+            Intent list = new Intent(this, ViewActivity.class);
+            TextView list_name = (TextView)((ViewGroup) view.getParent()).findViewById(R.id.list_name);
+            list.putExtra("name", list_name.getText().toString());
+            list.putExtra("listId", id);
+
+            startActivity(list);
+        } else {
+            Log.e("MainActivity", "Failure to find id for opening list.");
+        }
     }
 
     public void delete_list(View view) {
-        TextView list_name = (TextView)((ViewGroup) view.getParent()).findViewById(R.id.list_name);
-        new ListAPIHelper(this).execute("delete"); // Add id once implemented
+        Object tag =  ((ViewGroup) view.getParent()).getTag();
+
+        if( tag != null) {
+            String id = tag.toString();
+            new ListAPIHelper(this).execute("delete", id);
+        } else {
+            Log.e("MainActivity", "Failure to find id for deleting list.");
+        }
 
         refresh_table();
     }

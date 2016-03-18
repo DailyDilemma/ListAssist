@@ -1,6 +1,5 @@
 package com.comp4350.listassist.business;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.support.v4.content.ContextCompat;
@@ -13,8 +12,8 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.comp4350.listassist.R;
-import com.comp4350.listassist.objects.ShoppingList;
-import com.comp4350.listassist.objects.ShoppingListItem;
+import com.comp4350.listassist.objects.LAItem;
+import com.comp4350.listassist.objects.LAList;
 import com.comp4350.listassist.presentation.ViewActivity;
 
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -23,11 +22,11 @@ import org.springframework.web.client.RestTemplate;
 /**
  * Created by Daniel on 3/17/2016 for app.
  */
-public class ItemAPIHelper extends AsyncTask<String, ShoppingList, Boolean> {
+public class ItemAPIHelper extends AsyncTask<String, LAList, Boolean> {
     /*
     * Use:
-    *   new ItemAPIHelper(ShoppingListItem new_item).execute({listId});
-    *       - add item ShoppingListItem to listId
+    *   new ItemAPIHelper(LAItem new_item).execute({listId});
+    *       - add item LAItem to listId
     *
     *   new ItemAPIHelper(Activity context).execute();
     *       - refresh list information and fill out R.id.item_table
@@ -40,7 +39,7 @@ public class ItemAPIHelper extends AsyncTask<String, ShoppingList, Boolean> {
     * */
     private TableLayout item_table;
     private ViewActivity context;
-    private ShoppingListItem new_item;
+    private LAItem new_item;
 
     public ItemAPIHelper() {
         this.context = null;
@@ -54,7 +53,7 @@ public class ItemAPIHelper extends AsyncTask<String, ShoppingList, Boolean> {
         this.item_table = (TableLayout)context.findViewById(R.id.item_table);
     }
 
-    public ItemAPIHelper(ShoppingListItem new_item) {
+    public ItemAPIHelper(LAItem new_item) {
         this();
         this.new_item = new_item;
     }
@@ -69,9 +68,9 @@ public class ItemAPIHelper extends AsyncTask<String, ShoppingList, Boolean> {
                 // Get all lists: use progress to push lists out
                 RestTemplate restTemplate = new RestTemplate();
                 restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
-                ShoppingList shoppingList = restTemplate.getForObject("http://ec2-52-36-187-54.us-west-2.compute.amazonaws.com:8080/api/Lists/5", ShoppingList.class);
+                LAList LAList = restTemplate.getForObject("http://ec2-52-36-187-54.us-west-2.compute.amazonaws.com:8080/api/Lists/5", LAList.class);
 
-                publishProgress(shoppingList);
+                publishProgress(LAList);
 
                 success = true;
             } else if (params.length == 1) {
@@ -87,7 +86,7 @@ public class ItemAPIHelper extends AsyncTask<String, ShoppingList, Boolean> {
                 }
 
 
-            } else if (params.length == 3) {
+            } else if (params.length == 2) {
                 if(context != null) {
                     String url;
                     RestTemplate restTemplate;
@@ -96,7 +95,7 @@ public class ItemAPIHelper extends AsyncTask<String, ShoppingList, Boolean> {
 
                     switch (params[0]) {
                         case "check":
-                            itemId = params[2];
+                            itemId = params[1];
                             url = "http://ec2-52-36-187-54.us-west-2.compute.amazonaws.com:8080/api/Lists?listId=" + listId + "&itemId=" + itemId;
                             restTemplate = new RestTemplate();
                             restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
@@ -111,7 +110,7 @@ public class ItemAPIHelper extends AsyncTask<String, ShoppingList, Boolean> {
                             restTemplate.delete(url);
                             break;
                         case "delete":
-                            itemId = params[2];
+                            itemId = params[1];
                             url = "http://ec2-52-36-187-54.us-west-2.compute.amazonaws.com:8080/api/Lists?listId=" + listId + "&itemId=" + itemId;
                             restTemplate = new RestTemplate();
                             restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
@@ -132,7 +131,7 @@ public class ItemAPIHelper extends AsyncTask<String, ShoppingList, Boolean> {
 
     // When getting all lists, update progress with single list and add it to the app
     @Override
-    protected void onProgressUpdate(ShoppingList... progress) {
+    protected void onProgressUpdate(LAList... progress) {
         // Normally what you would do here is make a call to your list adapter to give it the
         // updated information now that is has returned from the thread. For now you can check
         // logcat to see the result of println messages if you want to verify there is data
@@ -166,29 +165,37 @@ public class ItemAPIHelper extends AsyncTask<String, ShoppingList, Boolean> {
         }
     }
 
-    private void set_list(ShoppingList list) {
+    private void set_list(LAList list) {
         // Dynamically add lists
         if(context != null) {
-            ((TextView)context.findViewById(R.id.list_name)).setText(list.getName());
+            if( list.getId() != null && !list.getId().equals("") ) {
+                ((TextView) context.findViewById(R.id.list_name)).setText(list.getName());
 
-            for (ShoppingListItem item : list.getShoppingListItems()) {
-                LayoutInflater inflater = (LayoutInflater) context.getSystemService
-                        (Context.LAYOUT_INFLATER_SERVICE);
+                for (LAItem item : list.getShoppingListItems()) {
+                    if(item.getId() != null && item.getId().equals("")) {
+                        LayoutInflater inflater = (LayoutInflater) context.getSystemService
+                                (Context.LAYOUT_INFLATER_SERVICE);
 
-                View list_item = inflater.inflate(
-                        R.layout.list_item, item_table, false
-                );
+                        View list_item = inflater.inflate(
+                                R.layout.list_item, item_table, false
+                        );
 
-                CheckBox tv = (CheckBox) list_item.findViewById(R.id.item);
+                        list_item.setTag(item.getId());
 
-                //TODO: Add id to tv view once implemented
-                tv.setText(item.getDescription().toString());
+                        CheckBox tv = (CheckBox) list_item.findViewById(R.id.item);
+                        tv.setText(item.getDescription().toString());
 
-                if (item.getChecked()) {
-                    context.check_item(tv);
+                        if (item.getChecked()) {
+                            context.check_item(tv);
+                        }
+
+                        item_table.addView(list_item);
+                    } else {
+                        Log.e("ItemAPIHelper", "Failure to get item id");
+                    }
                 }
-
-                item_table.addView(list_item);
+            } else {
+                Log.e("ItemAPIHelper", "Failure to get list id");
             }
         }
     }

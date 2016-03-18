@@ -1,9 +1,7 @@
 package com.comp4350.listassist.business;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
-import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,22 +11,16 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.comp4350.listassist.R;
-import com.comp4350.listassist.objects.ShoppingList;
+import com.comp4350.listassist.objects.LAList;
 import com.comp4350.listassist.presentation.MainActivity;
 
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 /**
  * Created by Daniel on 3/17/2016 for app.
  */
-public class ListAPIHelper extends AsyncTask<String, ShoppingList, Boolean> {
+public class ListAPIHelper extends AsyncTask<String, LAList, Boolean> {
     /*
     * Use:
     *   new ItemAPIHelper([Activity context]).execute("make", {listName});
@@ -41,7 +33,7 @@ public class ListAPIHelper extends AsyncTask<String, ShoppingList, Boolean> {
     *       - puts all lists into the activity in R.id.list_table
     * */
     private TableLayout list_table;
-    private Context context;
+    private MainActivity context;
 
     public ListAPIHelper() {
         // Used for make when context of app isn't needed
@@ -49,7 +41,7 @@ public class ListAPIHelper extends AsyncTask<String, ShoppingList, Boolean> {
         context = null;
     }
 
-    public ListAPIHelper(Activity context) {
+    public ListAPIHelper(MainActivity context) {
         // Used for getting, all returned objects are put in the tablelayout passed in
         this.context = context;
         this.list_table = (TableLayout)context.findViewById(R.id.list_table);
@@ -65,9 +57,9 @@ public class ListAPIHelper extends AsyncTask<String, ShoppingList, Boolean> {
                 // Get all lists: use progress to push lists out
                 RestTemplate restTemplate = new RestTemplate();
                 restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
-                ShoppingList[] shopLists = restTemplate.getForObject("http://ec2-52-36-187-54.us-west-2.compute.amazonaws.com:8080/api/Lists", ShoppingList[].class);
+                LAList[] shopLists = restTemplate.getForObject("http://ec2-52-36-187-54.us-west-2.compute.amazonaws.com:8080/api/Lists", LAList[].class);
 
-                for (ShoppingList curr_list : shopLists) {
+                for (LAList curr_list : shopLists) {
                     publishProgress(curr_list);
                 }
 
@@ -75,7 +67,7 @@ public class ListAPIHelper extends AsyncTask<String, ShoppingList, Boolean> {
             } else if (params.length == 2) {
                 String url;
                 RestTemplate restTemplate;
-                ShoppingList shopList;
+                LAList shopList;
 
                 switch (params[0]) {
                     case "delete":
@@ -114,7 +106,7 @@ public class ListAPIHelper extends AsyncTask<String, ShoppingList, Boolean> {
 
     // When getting all lists, update progress with single list and add it to the app
     @Override
-    protected void onProgressUpdate(ShoppingList... progress) {
+    protected void onProgressUpdate(LAList... progress) {
         // Normally what you would do here is make a call to your list adapter to give it the
         // updated information now that is has returned from the thread. For now you can check
         // logcat to see the result of println messages if you want to verify there is data
@@ -148,21 +140,26 @@ public class ListAPIHelper extends AsyncTask<String, ShoppingList, Boolean> {
         }
     }
 
-    private void append_list(ShoppingList item) {
+    private void append_list(LAList list) {
         // Dynamically add lists
         if(context != null) {
-            LayoutInflater inflater = (LayoutInflater) context.getSystemService
-                    (Context.LAYOUT_INFLATER_SERVICE);
+            if( list.getId() != null && !list.getId().equals("") ) {
+                LayoutInflater inflater = (LayoutInflater) context.getSystemService
+                        (Context.LAYOUT_INFLATER_SERVICE);
 
-            View list_row_entry = inflater.inflate(
-                    R.layout.list_row_entry, list_table, false
-            );
+                View list_row_entry = inflater.inflate(
+                        R.layout.list_row_entry, list_table, false
+                );
 
-            TextView tv = (TextView) list_row_entry.findViewById(R.id.list_name);
+                list_row_entry.setTag(list.getId());
+                TextView tv = (TextView) list_row_entry.findViewById(R.id.list_name);
 
-            tv.setText(item.getName());
+                tv.setText(list.getName());
 
-            list_table.addView(list_row_entry);
+                list_table.addView(list_row_entry);
+            } else {
+                Log.e("ListAPIHelper", "Failure to get id");
+            }
         }
     }
 }

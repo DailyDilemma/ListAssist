@@ -16,14 +16,34 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
         "Description",
         "Checked"
 })
-public class ShoppingListItem {
+public class LAItem {
 
+    @JsonProperty("id")
+    private String id;
     @JsonProperty("Description")
     private Object Description;
     @JsonProperty("Checked")
     private Boolean Checked;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+
+    /**
+     *
+     * @return
+     * The ID
+     */
+    @JsonProperty("id")
+    public String getId() {
+        return id;
+    }
+
+    /**
+     *
+     * @param Description
+     * The Description
+     */
+    @JsonProperty("id")
+    public void setId(String id) { this.id = id; }
 
     /**
      *

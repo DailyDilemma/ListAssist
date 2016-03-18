@@ -19,12 +19,14 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
         "ShoppingListItems"
 })
 
-public class ShoppingList {
+public class LAList {
 
     @JsonProperty("Name")
     private String Name;
+    @JsonProperty("id")
+    private String id;
     @JsonProperty("ShoppingListItems")
-    private List<ShoppingListItem> ShoppingListItems = new ArrayList<ShoppingListItem>();
+    private List<LAItem> ShoppingListItems = new ArrayList<LAItem>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -51,20 +53,36 @@ public class ShoppingList {
     /**
      *
      * @return
+     * The Id
+     */
+    @JsonProperty("id")
+    public String getId() { return id; }
+
+    /**
+     *
+     * @return
+     * The Id
+     */
+    @JsonProperty("id")
+    public void setId(String id) { this.id = id; }
+
+    /**
+     *
+     * @return
      * The ShoppingListItems
      */
     @JsonProperty("ShoppingListItems")
-    public List<ShoppingListItem> getShoppingListItems() {
+    public List<LAItem> getShoppingListItems() {
         return ShoppingListItems;
     }
 
     /**
      *
      * @param ShoppingListItems
-     * The ShoppingListItems
+     * The LAItems
      */
     @JsonProperty("ShoppingListItems")
-    public void setShoppingListItems(List<ShoppingListItem> ShoppingListItems) {
+    public void setShoppingListItems(List<LAItem> ShoppingListItems) {
         this.ShoppingListItems = ShoppingListItems;
     }
 
