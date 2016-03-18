@@ -1,11 +1,13 @@
 package com.comp4350.listassist.business;
 
 import android.content.Context;
+import android.graphics.Paint;
 import android.os.AsyncTask;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -65,20 +67,18 @@ public class ItemAPIHelper extends AsyncTask<String, LAList, Boolean> {
 
         try {
             if (params.length == 0) {
-                // Get List
-                String listId = context.getIntent().getStringExtra("listId");
-                RestTemplate restTemplate = new RestTemplate();
-                restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
-                LAList LAList = restTemplate.getForObject("http://ec2-52-36-187-54.us-west-2.compute.amazonaws.com:8080/api/Lists/" + listId, LAList.class);
+                if(context != null) {
+                    // Get List
+                    String listId = context.getIntent().getStringExtra("listId");
+                    RestTemplate restTemplate = new RestTemplate();
+                    restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+                    LAList LAList = restTemplate.getForObject("http://ec2-52-36-187-54.us-west-2.compute.amazonaws.com:8080/api/Lists/" + listId, LAList.class);
 
-                publishProgress(LAList);
+                    publishProgress(LAList);
 
-                success = true;
-            } else if (params.length == 1) {
-                // Add item
-                if (new_item != null) {
-                    String addListId = params[0];
-                    String url = "http://ec2-52-36-187-54.us-west-2.compute.amazonaws.com:8080/api/Lists?listId=" + addListId;
+                    success = true;
+                } else if (new_item != null) {
+                    String url = "http://ec2-52-36-187-54.us-west-2.compute.amazonaws.com:8080/api/ListItems";
 
                     RestTemplate restTemplate = new RestTemplate();
                     restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
@@ -97,7 +97,7 @@ public class ItemAPIHelper extends AsyncTask<String, LAList, Boolean> {
                     switch (params[0]) {
                         case "check":
                             itemId = params[1];
-                            url = "http://ec2-52-36-187-54.us-west-2.compute.amazonaws.com:8080/api/Lists?listId=" + listId + "&itemId=" + itemId;
+                            url = "http://ec2-52-36-187-54.us-west-2.compute.amazonaws.com:8080/api/ListItems?listId=" + listId + "&itemId=" + itemId;
                             restTemplate = new RestTemplate();
                             restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
 
@@ -108,11 +108,11 @@ public class ItemAPIHelper extends AsyncTask<String, LAList, Boolean> {
                             } else {
                                 Log.e("ItemAPIHelper", response + ": " + url);
                             }
-                            restTemplate.delete(url);
+
                             break;
                         case "delete":
                             itemId = params[1];
-                            url = "http://ec2-52-36-187-54.us-west-2.compute.amazonaws.com:8080/api/Lists?listId=" + listId + "&itemId=" + itemId;
+                            url = "http://ec2-52-36-187-54.us-west-2.compute.amazonaws.com:8080/api/ListItems?listId=" + listId + "&itemId=" + itemId;
                             restTemplate = new RestTemplate();
                             restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
 
@@ -173,7 +173,7 @@ public class ItemAPIHelper extends AsyncTask<String, LAList, Boolean> {
                 ((TextView) context.findViewById(R.id.list_name)).setText(list.getName());
 
                 for (ShoppingListItem item : list.getShoppingListItems()) {
-                    if(item.getId() != null) {
+                    if(item.getId() != null && item.getDescription() != null) {
                         LayoutInflater inflater = (LayoutInflater) context.getSystemService
                                 (Context.LAYOUT_INFLATER_SERVICE);
 
@@ -183,19 +183,30 @@ public class ItemAPIHelper extends AsyncTask<String, LAList, Boolean> {
 
                         String msg = item.getDescription() + " has ID = " + item.getId().toString();
                         Log.i("ItemAPIHelper", msg);
+                        list_item.setTag(item.getId());
 
                         CheckBox tv = (CheckBox) list_item.findViewById(R.id.item);
                         tv.setText(item.getDescription());
-                        tv.setTag(item.getId().toString());
 
                         if (item.getChecked()) {
-                            context.check_item(tv);
+                            tv.setChecked(item.getChecked());
+                            int pflag =  tv.getPaintFlags();
+
+                            if(((pflag | Paint.STRIKE_THRU_TEXT_FLAG) - pflag) != 0) {
+                                // text is not striked, add it
+                                tv.setPaintFlags(tv.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                            }
+                            tv.setClickable(false);
+
+                            item_table.addView(list_item, item_table.getChildCount());
+                        } else {
+                            item_table.addView(list_item, 0);
                         }
 
-                        item_table.addView(list_item);
+
                     } else {
                         String desc = item.getDescription();
-                        Log.e("ItemAPIHelper", "Failure to get id for item " + desc);
+                        Log.e("ItemAPIHelper", "Failure on item " + desc);
                     }
                 }
             } else {

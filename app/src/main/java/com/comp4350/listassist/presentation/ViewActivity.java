@@ -4,6 +4,7 @@ package com.comp4350.listassist.presentation;
  * Created by Daniel on 3/13/2016 for ListAssist.
  */
 
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
@@ -16,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.TableLayout;
 import android.widget.TableRow;
+import android.widget.Toast;
 
 import com.comp4350.listassist.R;
 import com.comp4350.listassist.business.ItemAPIHelper;
@@ -66,7 +68,7 @@ public class ViewActivity extends Activity {
     }
 
     public void delete_item(View view) {
-        Object tag = view.getTag();
+        Object tag = ((ViewGroup)view.getParent()).getTag();
 
         if(tag != null) {
             String itemId = tag.toString();
@@ -74,26 +76,21 @@ public class ViewActivity extends Activity {
 
             refresh_items();
         } else {
+            Toast.makeText(this, "Failed to delete item.", Toast.LENGTH_SHORT).show();
             Log.e("ViewActivity", "Failure to get id for deleting item");
         }
     }
 
     public void check_item(View view) {
-        // Check off an item, send to bottom of list
-        TableRow tr = (TableRow)view.getParent();
-        TableLayout tl = (TableLayout)this.findViewById(R.id.item_table);
-        CheckBox c_view = (CheckBox)view;
+        Object tag = ((ViewGroup)view.getParent()).getTag();
 
-        //TODO: Add api call to check item and add last bought interval, refresh list
-        int pflag =  c_view.getPaintFlags();
-        if(((pflag | Paint.STRIKE_THRU_TEXT_FLAG) - pflag) == 0) {
-            // text is already striked, remove it
-            c_view.setPaintFlags(c_view.getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
+        if( tag != null ) {
+            String id = tag.toString();
+            new ItemAPIHelper(this).execute("check", id);
+
+            refresh_items();
         } else {
-            // text is not striked, add it
-            c_view.setPaintFlags(c_view.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-            tl.removeView(tr);
-            tl.addView(tr);
+            Log.e("ViewActivity", "Failure to get id for item.");
         }
     }
 

@@ -14,7 +14,8 @@
         android:textSize="@dimen/H2"
         android:layout_weight="0.9"
         android:onClick="check_item"
-        android:textColor="@color/colorText" />
+        android:textColor="@color/colorText"
+        android:enabled="true" />
 
     <Button
         style="@android:style/Widget.Holo.Button.Borderless"

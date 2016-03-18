@@ -73,7 +73,9 @@ public class AddingDialog extends DialogFragment {
                                 ShoppingListItem new_item = new ShoppingListItem();
                                 new_item.setChecked(false);
                                 new_item.setDescription(inp_name);
-                                new ItemAPIHelper(new_item).execute(getArguments().getString("listId"));
+                                new_item.setListId(Integer.parseInt(getArguments().getString("listId")));
+
+                                new ItemAPIHelper(new_item).execute();
                                 ViewActivity.refresh_items();
                             } else {
                                 Toast.makeText(((AlertDialog) dialog).getContext(), "Can't add list, name not valid.", Toast.LENGTH_SHORT).show();
