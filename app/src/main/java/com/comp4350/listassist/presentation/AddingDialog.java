@@ -6,8 +6,12 @@ import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import com.comp4350.listassist.R;
+import com.comp4350.listassist.business.ListAPIHelper;
+import com.comp4350.listassist.objects.ShoppingList;
 
 /**
  * Created by Daniel on 3/16/2016 for ListAssist.
@@ -44,6 +48,15 @@ public class AddingDialog extends DialogFragment {
 
                         if(call_type.equals("list")) {
                             //TODO: Add list with api call, refresh lists
+                            EditText name_field = (EditText)((AlertDialog)dialog).findViewById(R.id.new_name);
+                            String inp_name = name_field.getText().toString();
+
+                            if(inp_name != null && !inp_name.equals("")) {
+                                new ListAPIHelper().execute("make", inp_name);
+                                MainActivity.refresh_table();
+                            } else {
+                                Toast.makeText(((AlertDialog) dialog).getContext(), "Can't add list, name not valid.", Toast.LENGTH_SHORT).show();
+                            }
                         } else if(call_type.equals("item")) {
                             //TODO: Add item with api call, refresh list
                         }

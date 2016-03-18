@@ -15,5 +15,7 @@
     <string name="list_name">List Name</string>
     <string name="open">Open</string>
     <string name="remove_item">X</string>
+    <string name="name_hint">Name</string>
+    <string name="refresh_desc">refresh window</string>
 
 </resources>

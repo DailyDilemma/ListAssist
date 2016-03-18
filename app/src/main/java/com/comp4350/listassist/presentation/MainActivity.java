@@ -8,26 +8,32 @@ import android.app.Activity;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.os.AsyncTask;
 import android.util.Log;
 
 import com.comp4350.listassist.R;
+import com.comp4350.listassist.business.ListAPIHelper;
 import com.comp4350.listassist.objects.ShoppingList;
 
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
 public class MainActivity extends Activity {
+    public static TableLayout list_table;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // The activity is being created.
         setContentView(R.layout.app_main);
 
+        list_table = (TableLayout)findViewById(R.id.list_table);
+
         // Calls the WebAPI on a separate thread to populate the initial list
-        new ListAPIHelper().execute();
+        new ListAPIHelper(list_table).execute();
 
     }
 
@@ -82,125 +88,18 @@ public class MainActivity extends Activity {
     public void delete_list(View view) {
         //TODO: Remove list with api call, refresh lists
         TextView list_name = (TextView)((ViewGroup) view.getParent()).findViewById(R.id.list_name);
+        new ListAPIHelper(list_table).execute("delete"); // Add id once implemented
     }
 
-    public void refresh_table() {
-        ViewGroup list_table = (ViewGroup)findViewById(R.id.list_table);
+    public void refresh_list(View view) {
+        MainActivity.refresh_table();
+    }
 
+    public static void refresh_table() {
         list_table.removeAllViews();
 
-        new ListAPIHelper().execute();
+        new ListAPIHelper(list_table).execute();
     }
 
-    // Table mutation methods
-    private void color_table() {
-        ViewGroup list_table = (ViewGroup)findViewById(R.id.list_table);
 
-        for(int i = 0; i < list_table.getChildCount(); i++) {
-            TableRow curr_row = (TableRow)list_table.getChildAt(i);
-
-            if(i % 2 == 0) {
-                curr_row.setBackground(getDrawable(R.drawable.banner_even));
-            } else {
-                curr_row.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimaryLight));
-            }
-        }
-    }
-
-    private void append_list(ShoppingList item) {
-        // Dynamically add lists
-        ViewGroup list_table = (ViewGroup)findViewById(R.id.list_table);
-
-        View list_row_entry = getLayoutInflater().inflate(
-                R.layout.list_row_entry, list_table, false
-        );
-
-        TextView tv = (TextView)list_row_entry.findViewById(R.id.list_name);
-
-        tv.setText(item.getName());
-
-        list_table.addView(list_row_entry);
-    }
-
-    protected class ListAPIHelper extends AsyncTask<String, ShoppingList, Boolean> {
-        // doInBackground is the function being called
-        @Override
-        protected Boolean doInBackground(String... params) {
-            boolean success = false;
-
-            try {
-                if (params.length == 0) {
-                    // Get all lists: use progress to push lists out
-                    RestTemplate restTemplate = new RestTemplate();
-                    restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
-                    ShoppingList[] shopLists = restTemplate.getForObject("http://ec2-52-36-187-54.us-west-2.compute.amazonaws.com:8080/api/Lists", ShoppingList[].class);
-
-                    for (ShoppingList curr_list : shopLists) {
-                        publishProgress(curr_list);
-                    }
-
-                    success = true;
-                } else if (params.length == 2) {
-                    int id;
-                    String url;
-                    RestTemplate restTemplate;
-                    ShoppingList shopList;
-
-                    switch (params[0]) {
-                        case "delete":
-                            id = Integer.parseInt(params[1]);
-                            url = "http://ec2-52-36-187-54.us-west-2.compute.amazonaws.com:8080/api/Lists?listId=" + id;
-                            restTemplate = new RestTemplate();
-                            restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
-                            shopList = restTemplate.getForObject(url, ShoppingList.class);
-                            publishProgress(shopList);
-                            break;
-                        case "get":
-                            id = Integer.parseInt(params[1]);
-                            url = "http://ec2-52-36-187-54.us-west-2.compute.amazonaws.com:8080/api/Lists/" + id;
-                            restTemplate = new RestTemplate();
-                            restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
-                            shopList = restTemplate.getForObject(url, ShoppingList.class);
-                            publishProgress(shopList);
-                            break;
-                        case "make":
-                            id = Integer.parseInt(params[1]);
-                            url = "http://ec2-52-36-187-54.us-west-2.compute.amazonaws.com:8080/api/Lists/" + id;
-                            restTemplate = new RestTemplate();
-                            restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
-                            shopList = restTemplate.getForObject(url, ShoppingList.class);
-                            publishProgress(shopList);
-                            break;
-                        default:
-                            break;
-                    }
-                }
-            } catch (Exception e) {
-                Log.e("MainActivity", e.getMessage(), e);
-            }
-
-            return success;
-        }
-
-        // When getting all lists, update progress with single list and add it to the app
-        @Override
-        protected void onProgressUpdate(ShoppingList... progress) {
-            // Normally what you would do here is make a call to your list adapter to give it the
-            // updated information now that is has returned from the thread. For now you can check
-            // logcat to see the result of println messages if you want to verify there is data
-            // in the classes
-            if (progress.length == 1) {
-                append_list(progress[0]);
-            }
-        }
-
-        // onPostExecute is what happens when the thread is complete. The result of 'doInBackground'
-        // is returned as an argument to this method
-        @Override
-        protected void onPostExecute(Boolean success) {
-            color_table();
-
-            boolean _success = success;
-        }
-    }
 }

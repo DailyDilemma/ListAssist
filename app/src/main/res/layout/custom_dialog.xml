@@ -6,9 +6,9 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/editText"
+        android:id="@+id/new_name"
         android:layout_gravity="center_horizontal"
-        android:hint="Name"
+        android:hint="@string/name_hint"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp" />
 </LinearLayout>
