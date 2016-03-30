@@ -2,8 +2,6 @@ package com.comp4350.listassist.objects;
 
 import org.junit.Test;
 
-import java.util.List;
-
 import static org.junit.Assert.*;
 
 public class LAListTest {

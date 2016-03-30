@@ -2,14 +2,12 @@ package com.comp4350.listassist.objects;
 
 import org.junit.Test;
 
-import java.util.List;
-
 import static org.junit.Assert.*;
 
 public class ShoppingListItemTest {
 
     @Test
-    public void testListItem() {
+    public void testShoppingListItem() {
         ShoppingListItem testItem;
 
         System.out.println("starting testShoppingListItem");
