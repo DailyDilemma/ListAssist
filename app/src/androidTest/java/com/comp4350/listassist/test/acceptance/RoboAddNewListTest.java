@@ -1,7 +1,6 @@
 package com.comp4350.listassist.test.acceptance;
 
 import com.comp4350.listassist.presentation.MainActivity;
-import com.comp4350.listassist.presentation.ViewActivity;
 import com.robotium.solo.*;
 import android.test.ActivityInstrumentationTestCase2;
 
