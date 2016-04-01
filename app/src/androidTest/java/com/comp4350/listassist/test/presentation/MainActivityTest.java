@@ -1,9 +1,13 @@
 package com.comp4350.listassist.test.presentation;
 
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.app.Instrumentation.*;
 import android.test.ActivityInstrumentationTestCase2;
 import android.test.UiThreadTest;
+import android.widget.ImageButton;
 
+import com.comp4350.listassist.R;
 import com.comp4350.listassist.presentation.AddingDialog;
 import com.comp4350.listassist.presentation.MainActivity;
 
@@ -23,5 +27,16 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
         ActivityMonitor activityMonitor = getInstrumentation().addMonitor(AddingDialog.class.getName(), null, false);
 
         MainActivity mainActivity = getActivity();
+        final ImageButton button = (ImageButton) mainActivity.findViewById(R.id.new_list_button);
+
+        mainActivity.runOnUiThread(new Runnable() {
+            @Override
+                    public void run() {
+                button.performClick();
+            }
+        });
+
+        Fragment addingDialog = mainActivity.getFragmentManager().findFragmentById(R.id.new_name);
+        assertTrue(addingDialog instanceof AddingDialog);
     }
 }
