@@ -5,7 +5,6 @@ import android.test.UiThreadTest;
 import android.widget.ImageButton;
 
 import com.comp4350.listassist.R;
-import com.comp4350.listassist.presentation.MainActivity;
 import com.comp4350.listassist.presentation.ViewActivity;
 
 public class ViewActivityTest extends ActivityInstrumentationTestCase2<ViewActivity> {
@@ -15,18 +14,18 @@ public class ViewActivityTest extends ActivityInstrumentationTestCase2<ViewActiv
     }
 
     @UiThreadTest
-    public void testActivityExists() {
+    public void testViewActivityExists() {
         ViewActivity viewActivity = getActivity();
         assertNotNull(viewActivity);
     }
 
-    public void testRefreshViewButton() {
+    public void testRefreshViewButtonExists() {
         ViewActivity viewActivity = getActivity();
         final ImageButton button = (ImageButton) viewActivity.findViewById(R.id.refresh_list);
         assertNotNull(button);
     }
 
-    public void testAddListButton() {
+    public void testAddListButtonExists() {
         ViewActivity viewActivity = getActivity();
         final ImageButton button = (ImageButton) viewActivity.findViewById(R.id.add_item);
         assertNotNull(button);

@@ -14,18 +14,18 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
     }
 
     @UiThreadTest
-    public void testActivityExists() {
+    public void testMainActivityExists() {
         MainActivity mainActivity = getActivity();
         assertNotNull(mainActivity);
     }
 
-    public void testRefreshViewButton() {
+    public void testRefreshViewButtonIsPresent() {
         MainActivity mainActivity = getActivity();
         final ImageButton button = (ImageButton) mainActivity.findViewById(R.id.refresh_view);
         assertNotNull(button);
     }
 
-    public void testAddListButton() {
+    public void testAddListButtonIsPresent() {
         MainActivity mainActivity = getActivity();
         final ImageButton button = (ImageButton) mainActivity.findViewById(R.id.new_list_button);
         assertNotNull(button);
