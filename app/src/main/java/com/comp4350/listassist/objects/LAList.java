@@ -1,10 +1,5 @@
 package com.comp4350.listassist.objects;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -12,11 +7,19 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Generated;
+
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Generated("org.jsonschema2pojo")
 @JsonPropertyOrder({
         "Name",
         "ShoppingListItems",
+        "ShoppingListSuggestions",
         "Id"
 })
 public class LAList {
@@ -25,6 +28,8 @@ public class LAList {
     private String Name;
     @JsonProperty("ShoppingListItems")
     private List<ShoppingListItem> ShoppingListItems = new ArrayList<ShoppingListItem>();
+    @JsonProperty("ShoppingListSuggestions")
+    private List<SuggestedListItem> SuggestedListItems = new ArrayList<SuggestedListItem>();
     @JsonProperty("Id")
     private Integer Id;
     @JsonIgnore
@@ -68,6 +73,26 @@ public class LAList {
     @JsonProperty("ShoppingListItems")
     public void setShoppingListItems(List<ShoppingListItem> ShoppingListItems) {
         this.ShoppingListItems = ShoppingListItems;
+    }
+
+    /**
+     *
+     * @return
+     * The SuggestedListItems
+     */
+    @JsonProperty("ShoppingListSuggestions")
+    public List<SuggestedListItem> getSuggestedListItems() {
+        return SuggestedListItems;
+    }
+
+    /**
+     *
+     * @param SuggestedListItems
+     * The SuggestedListItems
+     */
+    @JsonProperty("ShoppingListSuggestions")
+    public void setSuggestedListItems(List<SuggestedListItem> SuggestedListItems) {
+        this.SuggestedListItems = SuggestedListItems;
     }
 
     /**

@@ -7,23 +7,23 @@ import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.Button;
-import java.util.List;
-import java.util.Random;
 
 import com.comp4350.listassist.R;
-import com.comp4350.listassist.objects.ShoppingListItem;
 import com.comp4350.listassist.objects.LAList;
+import com.comp4350.listassist.objects.ShoppingListItem;
 import com.comp4350.listassist.objects.SuggestedListItem;
 import com.comp4350.listassist.presentation.ViewActivity;
 
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.List;
+import java.util.Random;
 
 /**
  * Created by Daniel on 3/17/2016 for app.
@@ -46,6 +46,7 @@ public class ItemAPIHelper extends AsyncTask<String, LAList, Boolean> {
     private TableLayout item_table;
     private ViewActivity context;
     private ShoppingListItem new_item;
+    private SuggestedListItem suggested_item;
 
     public ItemAPIHelper() {
         this.context = null;
@@ -62,6 +63,11 @@ public class ItemAPIHelper extends AsyncTask<String, LAList, Boolean> {
     public ItemAPIHelper(ShoppingListItem new_item) {
         this();
         this.new_item = new_item;
+    }
+
+    public ItemAPIHelper(SuggestedListItem suggested_item) {
+        this();
+        this.suggested_item = suggested_item;
     }
 
     // doInBackground is the function being called
@@ -88,6 +94,8 @@ public class ItemAPIHelper extends AsyncTask<String, LAList, Boolean> {
                     restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
 
                     restTemplate.postForObject(url, new_item, Integer.class);
+
+                    this.new_item = null;
                 }
 
 
@@ -97,6 +105,7 @@ public class ItemAPIHelper extends AsyncTask<String, LAList, Boolean> {
                     RestTemplate restTemplate;
                     String listId = context.getIntent().getStringExtra("listId");
                     String itemId;
+                    int response;
 
                     switch (params[0]) {
                         case "check":
@@ -105,7 +114,7 @@ public class ItemAPIHelper extends AsyncTask<String, LAList, Boolean> {
                             restTemplate = new RestTemplate();
                             restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
 
-                            int response = restTemplate.postForObject(url, null, Integer.class);
+                            response = restTemplate.postForObject(url, null, Integer.class);
 
                             if (response < 300 && response > 199) {
                                 success = true;
@@ -121,6 +130,22 @@ public class ItemAPIHelper extends AsyncTask<String, LAList, Boolean> {
                             restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
 
                             restTemplate.delete(url);
+                            break;
+                        case "suggest":
+                            itemId = params[1];
+                            url = "http://ec2-52-36-187-54.us-west-2.compute.amazonaws.com:8080/api/AcceptSuggestion?suggestionId=" + itemId;
+                            restTemplate = new RestTemplate();
+
+                            restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+
+                            response = restTemplate.postForObject(url, null, Integer.class);
+
+                            if (response < 300 && response > 199) {
+                                success = true;
+                            } else {
+                                Log.e("ItemAPIHelper", response + ": " + url);
+                            }
+
                             break;
                         default:
                             break;
@@ -176,15 +201,21 @@ public class ItemAPIHelper extends AsyncTask<String, LAList, Boolean> {
             if( list.getId() != null ) {
 
                 List<SuggestedListItem> suggested = list.getSuggestedListItems();
-                suggested.add(new SuggestedListItem("TEST", 1, 2));
-                suggested.add(new SuggestedListItem("TEST2", 3, 4));
-                suggested.add(new SuggestedListItem("NEW", 5, 6));
                 Button suggestedItem = (Button) context.findViewById(R.id.suggested_item);
 
-                int index = getRandomIndex(suggested.size());
+                //generateTestSuggestions(suggested);
 
-                suggestedItem.setText("Suggested for you: " + suggested.get(index).getDescription());
-                suggestedItem.setTag(suggested.get(index).getId() + " " + suggested.get(index).getListId());
+                if(suggested.isEmpty())
+                {
+                    suggestedItem.setText("No suggestions available.");
+                }
+                else
+                {
+                    int index = getRandomIndex(suggested.size());
+                    suggestedItem.setText("Suggested for you: " + suggested.get(index).getDescription());
+                    suggestedItem.setTag(suggested.get(index).getId());
+                }
+
                 ((TextView) context.findViewById(R.id.list_name)).setText(list.getName());
 
                 for (ShoppingListItem item : list.getShoppingListItems()) {
@@ -236,5 +267,13 @@ public class ItemAPIHelper extends AsyncTask<String, LAList, Boolean> {
         int index = rand.nextInt(max + 1) % max;
 
         return index;
+    }
+
+    private void generateTestSuggestions(List<SuggestedListItem> suggested)
+    {
+        suggested.add(new SuggestedListItem("Water", 999, 999));
+        suggested.add(new SuggestedListItem("Air", 997, 999));
+        suggested.add(new SuggestedListItem("Sunlight", 899, 999));
+        suggested.add(new SuggestedListItem("Food", 998, 999));
     }
 }

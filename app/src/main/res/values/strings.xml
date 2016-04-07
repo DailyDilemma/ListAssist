@@ -10,12 +10,14 @@
     <string name="edit">Edit</string>
     <string name="home">Home</string>
     <string name="item_name">Item name</string>
+    <string name="suggested_item">Suggested Item</string>
     <string name="lists">Lists</string>
     <string name="list_assist_welcome">Welcome to ListAssist! Manage your lists here!</string>
     <string name="list_name">List Name</string>
     <string name="open">Open</string>
     <string name="remove_item">X</string>
     <string name="name_hint">Name</string>
-    <string name="refresh_desc">refresh window</string>
+    <string name="refresh_desc">Refresh window</string>
+    <string name="add_suggest_desc">Add suggested item</string>
 
 </resources>

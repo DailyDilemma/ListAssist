@@ -4,19 +4,15 @@ package com.comp4350.listassist.presentation;
  * Created by Daniel on 3/13/2016 for ListAssist.
  */
 
-import android.app.AlertDialog;
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
-import android.graphics.Paint;
 import android.os.Bundle;
-import android.app.Activity;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
 import android.widget.TableLayout;
-import android.widget.TableRow;
 import android.widget.Toast;
 
 import com.comp4350.listassist.R;
@@ -91,6 +87,23 @@ public class ViewActivity extends Activity {
             refresh_items();
         } else {
             Log.e("ViewActivity", "Failure to get id for item.");
+        }
+    }
+
+    public void add_suggested_item(View view) {
+        Object tag = view.getTag();
+
+        if(tag != null)
+        {
+            String id = tag.toString();
+
+            new ItemAPIHelper(this).execute("suggest", id);
+
+            refresh_items();
+        }
+        else
+        {
+            Log.e("ViewActivity", "Failure to get id, list id and description for item.");
         }
     }
 
