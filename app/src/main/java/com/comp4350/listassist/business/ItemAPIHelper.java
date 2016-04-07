@@ -12,10 +12,14 @@ import android.widget.CheckBox;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Button;
+import java.util.List;
+import java.util.Random;
 
 import com.comp4350.listassist.R;
 import com.comp4350.listassist.objects.ShoppingListItem;
 import com.comp4350.listassist.objects.LAList;
+import com.comp4350.listassist.objects.SuggestedListItem;
 import com.comp4350.listassist.presentation.ViewActivity;
 
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -83,7 +87,7 @@ public class ItemAPIHelper extends AsyncTask<String, LAList, Boolean> {
                     RestTemplate restTemplate = new RestTemplate();
                     restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
 
-                    restTemplate.put(url, new_item);
+                    restTemplate.postForObject(url, new_item, Integer.class);
                 }
 
 
@@ -170,6 +174,17 @@ public class ItemAPIHelper extends AsyncTask<String, LAList, Boolean> {
         // Dynamically add lists
         if(context != null) {
             if( list.getId() != null ) {
+
+                List<SuggestedListItem> suggested = list.getSuggestedListItems();
+                suggested.add(new SuggestedListItem("TEST", 1, 2));
+                suggested.add(new SuggestedListItem("TEST2", 3, 4));
+                suggested.add(new SuggestedListItem("NEW", 5, 6));
+                Button suggestedItem = (Button) context.findViewById(R.id.suggested_item);
+
+                int index = getRandomIndex(suggested.size());
+
+                suggestedItem.setText("Suggested for you: " + suggested.get(index).getDescription());
+                suggestedItem.setTag(suggested.get(index).getId() + " " + suggested.get(index).getListId());
                 ((TextView) context.findViewById(R.id.list_name)).setText(list.getName());
 
                 for (ShoppingListItem item : list.getShoppingListItems()) {
@@ -213,5 +228,13 @@ public class ItemAPIHelper extends AsyncTask<String, LAList, Boolean> {
                 Log.e("ItemAPIHelper", "Failure to get list id");
             }
         }
+    }
+
+    private int getRandomIndex(int max)
+    {
+        Random rand = new Random();
+        int index = rand.nextInt(max + 1) % max;
+
+        return index;
     }
 }
