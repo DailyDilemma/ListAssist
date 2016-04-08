@@ -110,22 +110,16 @@ public class ItemAPIHelper extends AsyncTask<String, LAList, Boolean> {
                     switch (params[0]) {
                         case "check":
                             itemId = params[1];
-                            url = "http://ec2-52-36-187-54.us-west-2.compute.amazonaws.com:8080/api/ListItems?listId=" + listId + "&itemId=" + itemId;
+                            url = "http://ec2-52-36-187-54.us-west-2.compute.amazonaws.com:8080/api/ListItems/list/" + listId + "/item/" + itemId;
                             restTemplate = new RestTemplate();
                             restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
 
-                            response = restTemplate.postForObject(url, null, Integer.class);
-
-                            if (response < 300 && response > 199) {
-                                success = true;
-                            } else {
-                                Log.e("ItemAPIHelper", response + ": " + url);
-                            }
+                            restTemplate.put(url, null);
 
                             break;
                         case "delete":
                             itemId = params[1];
-                            url = "http://ec2-52-36-187-54.us-west-2.compute.amazonaws.com:8080/api/ListItems?listId=" + listId + "&itemId=" + itemId;
+                            url = "http://ec2-52-36-187-54.us-west-2.compute.amazonaws.com:8080/api/ListItems/list/" + listId + "/item/" + itemId;
                             restTemplate = new RestTemplate();
                             restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
 

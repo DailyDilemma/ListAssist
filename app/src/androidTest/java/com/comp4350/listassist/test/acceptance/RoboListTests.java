@@ -1,5 +1,6 @@
 package com.comp4350.listassist.test.acceptance;
 
+import com.comp4350.listassist.R;
 import com.comp4350.listassist.presentation.MainActivity;
 import com.comp4350.listassist.presentation.ViewActivity;
 import com.robotium.solo.*;
@@ -68,7 +69,23 @@ public class RoboListTests extends ActivityInstrumentationTestCase2<MainActivity
         solo.goBack();
     }
 
-    public void test03_RoboDeleteItemFromList() {
+    public void test03_RoboCheckItemFromList() {
+        //Wait for Main activity
+        assertTrue("did not get main activity", solo.waitForActivity("MainActivity"));
+
+        //Click on Open button for Robo Test List
+        assertNotNull(solo.getCurrentViews());
+        solo.clickOnView(solo.getView(com.comp4350.listassist.R.id.open_button, indexOfView));
+        assertTrue("did not open view activity", solo.waitForActivity(ViewActivity.class));
+
+        //Click on Checkbox for Test Item 1
+        solo.clickOnView(solo.getView(com.comp4350.listassist.R.id.item, 0));
+        assertTrue("test item not checked", solo.isCheckBoxChecked(0));
+
+        solo.goBack();
+    }
+
+    public void test04_RoboDeleteItemFromList() {
         //Wait for Main activity
         assertTrue("did not get main activity", solo.waitForActivity("MainActivity"));
 
@@ -84,7 +101,7 @@ public class RoboListTests extends ActivityInstrumentationTestCase2<MainActivity
         solo.goBack();
     }
 
-    public void test04_RoboDeleteEmptyList() {
+    public void test05_RoboDeleteEmptyList() {
         //Wait for Main activity
         assertTrue("did not get main activity", solo.waitForActivity("MainActivity"));
 
