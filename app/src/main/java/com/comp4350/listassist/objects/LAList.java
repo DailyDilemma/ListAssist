@@ -17,10 +17,10 @@ import javax.annotation.Generated;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Generated("org.jsonschema2pojo")
 @JsonPropertyOrder({
+        "Id",
         "Name",
         "ShoppingListItems",
-        "ShoppingListSuggestions",
-        "Id"
+        "ShoppingListSuggestions"
 })
 public class LAList {
 

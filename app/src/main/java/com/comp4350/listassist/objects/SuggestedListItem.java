@@ -29,6 +29,11 @@ public class SuggestedListItem {
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
+    public SuggestedListItem()
+    {
+
+    }
+
     public SuggestedListItem(String description, Integer id, Integer listId)
     {
         this.Description = description;

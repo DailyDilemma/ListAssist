@@ -133,7 +133,7 @@ public class ItemAPIHelper extends AsyncTask<String, LAList, Boolean> {
                             break;
                         case "suggest":
                             itemId = params[1];
-                            url = "http://ec2-52-36-187-54.us-west-2.compute.amazonaws.com:8080/api/AcceptSuggestion?suggestionId=" + itemId;
+                            url = "http://ec2-52-36-187-54.us-west-2.compute.amazonaws.com:8080/api/AcceptSuggestion/" + itemId;
                             restTemplate = new RestTemplate();
 
                             restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
